@@ -26,21 +26,63 @@
 
 <div class="section">
   <h2>Mayssa</h2><span class="niveau">5ème</span>
-  <ul>
-    <li><a href="mayssa/evaluation2-histoire-5e.html">Evaluation2 Histoire 5E</a><span class="tag">Mayssa</span></li>
-  </ul>
+  <ul id="list-mayssa"><li class="empty">Chargement...</li></ul>
 </div>
+
 <div class="section">
   <h2>Assiya</h2><span class="niveau">CM2</span>
-  <ul>
-    <li><a href="assiya/evaluation-ww1-cm2-assiya.html">Evaluation Ww1 Cm2 Assiya</a><span class="tag">Assiya</span></li>
-  </ul>
+  <ul id="list-assiya"><li class="empty">Chargement...</li></ul>
 </div>
+
 <div class="section">
   <h2>Amine</h2><span class="niveau">3ème</span>
-  <ul>
-    <li class="empty">Aucun fichier pour l'instant</li>
-  </ul>
+  <ul id="list-amine"><li class="empty">Chargement...</li></ul>
 </div>
+
+<script>
+const REPO = 'sajomtech-commits/cours-enfants';
+const BRANCH = 'main';
+
+const enfants = [
+  { id: 'mayssa', folder: 'mayssa', tag: 'Mayssa' },
+  { id: 'assiya', folder: 'assiya', tag: 'Assiya' },
+  { id: 'amine',  folder: 'amine',  tag: 'Amine'  },
+];
+
+function formatName(filename) {
+  return filename
+    .replace(/\.html$/, '')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+}
+
+async function loadFolder(enfant) {
+  const ul = document.getElementById('list-' + enfant.id);
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${REPO}/contents/${enfant.folder}?ref=${BRANCH}`
+    );
+    const files = await res.json();
+    const htmlFiles = files.filter(f => f.name.endsWith('.html'));
+
+    if (htmlFiles.length === 0) {
+      ul.innerHTML = '<li class="empty">Aucun fichier pour l\'instant</li>';
+      return;
+    }
+
+    ul.innerHTML = htmlFiles.map(f => `
+      <li>
+        <a href="${enfant.folder}/${f.name}">${formatName(f.name)}</a>
+        <span class="tag">${enfant.tag}</span>
+      </li>
+    `).join('');
+
+  } catch(e) {
+    ul.innerHTML = '<li class="empty">Erreur de chargement</li>';
+  }
+}
+
+enfants.forEach(loadFolder);
+</script>
 </body>
 </html>
