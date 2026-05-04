@@ -1,0 +1,553 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body-wrap { font-family: 'Nunito', sans-serif; }
+  
+  .app {
+    font-family: 'Nunito', sans-serif;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .header {
+    text-align: center;
+    padding: 1.5rem 1rem 1rem;
+    border-radius: var(--border-radius-lg);
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    margin-bottom: 1.5rem;
+  }
+
+  .header h1 {
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #185FA5;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .header .sub {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 0.6rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .score-pill {
+    background: #E6F1FB;
+    color: #0C447C;
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .lecon {
+    background: #E6F1FB;
+    border: 1px solid #B5D4F4;
+    border-left: 4px solid #185FA5;
+    border-radius: var(--border-radius-md);
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.4rem;
+    font-size: 13.5px;
+    color: #0C447C;
+    line-height: 1.7;
+  }
+
+  .lecon strong {
+    font-weight: 700;
+  }
+
+  .lecon-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #185FA5;
+    margin-bottom: 6px;
+  }
+
+  .question-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .question-card.correct {
+    border-color: #1D9E75;
+    background: #E1F5EE;
+  }
+
+  .question-card.wrong {
+    border-color: #D85A30;
+    background: #FAECE7;
+  }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .q-num {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #185FA5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .q-type {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-secondary);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .q-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+  }
+
+  .q-text .expr {
+    font-family: 'Courier New', monospace;
+    background: var(--color-background-secondary);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #185FA5;
+    font-weight: 700;
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .choice-btn {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    background: #E6F1FB;
+    border-color: #185FA5;
+    color: #0C447C;
+  }
+
+  .choice-btn.selected-correct {
+    background: #1D9E75;
+    border-color: #1D9E75;
+    color: white;
+  }
+
+  .choice-btn.selected-wrong {
+    background: #D85A30;
+    border-color: #D85A30;
+    color: white;
+  }
+
+  .choice-btn.reveal-correct {
+    background: #E1F5EE;
+    border-color: #1D9E75;
+    color: #085041;
+  }
+
+  .choice-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .feedback {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: var(--border-radius-md);
+  }
+
+  .feedback.ok {
+    color: #085041;
+    background: #9FE1CB44;
+  }
+
+  .feedback.ko {
+    color: #4A1B0C;
+    background: #F5C4B344;
+  }
+
+  .open-answer {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .open-answer input {
+    flex: 1;
+    min-width: 120px;
+    padding: 7px 10px;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border-secondary);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+  }
+
+  .open-answer button, .validate-btn {
+    background: #185FA5;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: 7px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .open-answer button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .result-box {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-tertiary);
+    margin-top: 1.5rem;
+  }
+
+  .result-emoji { font-size: 48px; margin-bottom: 12px; }
+  .result-score { font-family: 'Fredoka One', sans-serif; font-size: 36px; color: #185FA5; }
+  .result-msg { font-size: 15px; color: var(--color-text-secondary); margin: 8px 0 20px; }
+
+  .reset-btn {
+    background: #185FA5;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: 12px 28px;
+    font-family: 'Fredoka One', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.15s;
+  }
+
+  .reset-btn:hover { background: #0C447C; }
+
+  .progress-wrap {
+    height: 6px;
+    background: var(--color-background-secondary);
+    border-radius: 3px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #185FA5;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .section-divider {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--color-text-secondary);
+    font-weight: 700;
+    margin: 1.4rem 0 0.6rem;
+  }
+</style>
+
+<div class="app" id="app">
+  <div class="header">
+    <h1>📐 Calcul Littéral — 5ème</h1>
+    <div class="sub">Exercices pour Mayssa · Programme 2026</div>
+  </div>
+  <div id="content"></div>
+</div>
+
+<script>
+const r = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr => arr[r(0,arr.length-1)];
+const vars = ['x','a','n','k','p','m'];
+const v = () => pick(vars);
+const mc = (correct, wrongs) => {
+  const opts = [correct, ...wrongs.slice(0,3)].sort(()=>Math.random()-0.5);
+  return { opts, correct };
+};
+
+function genQuestions() {
+  const qs = [];
+
+  // Q1 - Définition QCM
+  qs.push({
+    type: 'Définition',
+    text: 'Qu\'est-ce qu\'une <strong>expression littérale</strong> ?',
+    ...mc(
+      'Un calcul contenant une ou plusieurs lettres représentant des nombres',
+      ['Un calcul avec uniquement des chiffres', 'Une liste de mots en français', 'Un tableau de valeurs']
+    )
+  });
+
+  // Q2 - Simplifier écriture
+  const a = r(2,9), letter = v();
+  qs.push({
+    type: 'Simplifier l\'écriture',
+    text: `Simplifie : <span class="expr">${a} × ${letter}</span>`,
+    ...mc(
+      `${a}${letter}`,
+      [`${letter}+${a}`, `${letter}${a}+1`, `${a}+${letter}`]
+    )
+  });
+
+  // Q3 - Substitution (calculer pour x=valeur)
+  const c = r(2,8), d = r(1,10), xval = r(2,6), L = v();
+  const res3 = c*xval + d;
+  qs.push({
+    type: 'Calculer une expression',
+    text: `Calcule <span class="expr">${c}${L} + ${d}</span> pour <span class="expr">${L} = ${xval}</span>`,
+    ...mc(
+      String(res3),
+      [String(res3+c), String(res3-d), String(res3+1)]
+    )
+  });
+
+  // Q4 - Traduire une phrase en expression
+  const e = r(2,7), f = r(3,10), L2 = v();
+  qs.push({
+    type: 'Traduire en expression',
+    text: `Traduis par une expression : « Le triple de <span class="expr">${L2}</span> augmenté de <span class="expr">${f}</span> »`,
+    ...mc(
+      `3${L2} + ${f}`,
+      [`3 + ${L2} + ${f}`, `${f}${L2} + 3`, `3 × (${L2} + ${f})`]
+    )
+  });
+
+  // Q5 - Programme de calcul
+  const start = r(3,8), step1 = r(2,5), step2 = r(2,6);
+  const res5 = (start + step1) * step2;
+  qs.push({
+    type: 'Programme de calcul',
+    text: `Programme : <em>Choisir un nombre → Ajouter ${step1} → Multiplier par ${step2}</em><br>Quel résultat obtient-on avec <span class="expr">${start}</span> comme nombre de départ ?`,
+    ...mc(
+      String(res5),
+      [String(start*step2+step1), String(start+step1+step2), String(res5+step2)]
+    )
+  });
+
+  // Q6 - Périmètre rectangle
+  const L3 = v();
+  const wfix = r(3,8);
+  qs.push({
+    type: 'Géométrie — Périmètre',
+    text: `Un rectangle a une longueur variable <span class="expr">${L3}</span> et une largeur de <span class="expr">${wfix}</span>. Quelle expression donne son périmètre ?`,
+    ...mc(
+      `2(${L3} + ${wfix})`,
+      [`${L3} × ${wfix}`, `${L3} + ${wfix}`, `4${L3} + ${wfix}`]
+    )
+  });
+
+  // Q7 - Réduire expression
+  const p = r(2,7), q = r(1,5), L4 = v();
+  const sum = p+q;
+  qs.push({
+    type: 'Réduire une expression',
+    text: `Réduis : <span class="expr">${p}${L4} + ${q}${L4}</span>`,
+    ...mc(
+      `${sum}${L4}`,
+      [`${p*q}${L4}`, `${p}${L4}²`, `${sum}`]
+    )
+  });
+
+  // Q8 - Distributivité
+  const fa = r(2,5), fb = r(2,6), fc = r(2,4), L5 = v();
+  const ra = fa*fb, rc = fa*fc;
+  qs.push({
+    type: 'Distributivité — Développer',
+    text: `Développe : <span class="expr">${fa}(${fb}${L5} + ${fc})</span>`,
+    ...mc(
+      `${ra}${L5} + ${rc}`,
+      [`${fa}${fb}${L5} + ${fc}`, `${fa}${L5} + ${fa}${fc}`, `${ra}${L5} + ${fc}`]
+    )
+  });
+
+  // Q9 - Problème texte
+  const prix1 = r(2,8), L6 = v();
+  qs.push({
+    type: 'Problème',
+    text: `Une clé USB coûte <span class="expr">${L6}</span> euros. Un livre coûte <span class="expr">${prix1}</span> € de plus que la clé USB. Quelle est l'expression du prix du livre ?`,
+    ...mc(
+      `${L6} + ${prix1}`,
+      [`${L6} - ${prix1}`, `${prix1}${L6}`, `${prix1} - ${L6}`]
+    )
+  });
+
+  // Q10 - Conventions d'écriture
+  const num = r(2,6), L7 = v();
+  qs.push({
+    type: 'Convention d\'écriture',
+    text: `Comment s\'écrit correctement <span class="expr">${L7} × ${L7}</span> en notation simplifiée ?`,
+    ...mc(
+      `${L7}²`,
+      [`2${L7}`, `${L7}+${L7}`, `${num}${L7}`]
+    )
+  });
+
+  return qs;
+}
+
+let questions = [], answers = [], score = 0, done = 0;
+
+function render() {
+  const content = document.getElementById('content');
+  const total = questions.length;
+  const pct = Math.round(done/total*100);
+
+  let html = `
+    <div class="lecon">
+      <div class="lecon-title">📖 Rappel de cours</div>
+      Une <strong>expression littérale</strong> est un calcul contenant des lettres (variables).
+      On simplifie l'écriture : <strong>3 × x = 3x</strong> · <strong>x × x = x²</strong>.
+      Pour calculer la valeur d'une expression, on <strong>substitue</strong> la lettre par un nombre.
+      La distributivité : <strong>a(b + c) = ab + ac</strong>.
+    </div>
+    <div class="score-bar">
+      <span>Question <strong>${Math.min(done+1,total)}</strong> / ${total}</span>
+      <span class="score-pill">✓ ${score} / ${total}</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>
+  `;
+
+  questions.forEach((q, i) => {
+    const ans = answers[i];
+    let cardClass = '';
+    if (ans !== undefined) cardClass = ans === q.correct ? 'correct' : 'wrong';
+
+    html += `<div class="question-card ${cardClass}" id="card-${i}">
+      <div class="q-header">
+        <div class="q-num">${i+1}</div>
+        <div>
+          <div class="q-type">${q.type}</div>
+          <div class="q-text">${q.text}</div>
+        </div>
+      </div>
+      <div class="choices">`;
+
+    q.opts.forEach(opt => {
+      let cls = 'choice-btn';
+      let dis = '';
+      if (ans !== undefined) {
+        dis = 'disabled';
+        if (opt === q.correct) cls += ' reveal-correct';
+        if (opt === ans && ans === q.correct) cls = 'choice-btn selected-correct';
+        if (opt === ans && ans !== q.correct) cls = 'choice-btn selected-wrong';
+      }
+      html += `<button class="${cls}" ${dis} onclick="answer(${i},'${opt.replace(/'/g,"\\'")}')">
+        ${opt}
+      </button>`;
+    });
+
+    html += `</div>`;
+
+    if (ans !== undefined) {
+      if (ans === q.correct) {
+        html += `<div class="feedback ok">✓ Bravo Mayssa, bonne réponse !</div>`;
+      } else {
+        html += `<div class="feedback ko">✗ La bonne réponse était : <strong>${q.correct}</strong></div>`;
+      }
+    }
+
+    html += `</div>`;
+  });
+
+  if (done === total) {
+    const pct2 = Math.round(score/total*100);
+    let emoji = score >= 8 ? '🌟' : score >= 6 ? '😊' : score >= 4 ? '💪' : '📚';
+    let msg = score >= 8 ? 'Excellent travail ! Tu maîtrises le calcul littéral !' :
+              score >= 6 ? 'Très bien ! Encore un peu d\'entraînement !' :
+              score >= 4 ? 'Courage ! Relis le cours et réessaie.' : 'Continue à t\'entraîner, tu vas y arriver !';
+    html += `<div class="result-box">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${score} / ${total}</div>
+      <div class="result-msg">${msg}</div>
+      <button class="reset-btn" onclick="reset()">🔄 Nouveaux exercices</button>
+    </div>`;
+  }
+
+  content.innerHTML = html;
+}
+
+function answer(i, opt) {
+  if (answers[i] !== undefined) return;
+  answers[i] = opt;
+  if (opt === questions[i].correct) score++;
+  done++;
+  render();
+  setTimeout(() => {
+    const el = document.getElementById('card-'+i);
+    if (el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 100);
+}
+
+function reset() {
+  questions = genQuestions();
+  answers = [];
+  score = 0;
+  done = 0;
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+reset();
+</script>
