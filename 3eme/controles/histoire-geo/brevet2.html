@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Brevet 2026 · Histoire-Géo-EMC · Entraînement interactif</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #334155;
+            --border: #e2e8f0;
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
+        }
+
+        body.dark {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --text-muted: #cbd5e1;
+            --border: #334155;
+            --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        body.dyslexic {
+            font-family: 'OpenDyslexic', 'Comic Neue', 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            letter-spacing: 0.03em;
+        }
+
+        .app-header {
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logo h1 { font-size: 1.4rem; font-weight: 600; color: var(--primary); }
+        .logo p { font-size: 0.75rem; color: var(--text-muted); }
+        .header-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .btn-icon {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+            color: var(--text);
+        }
+        .btn-icon:hover { background: var(--primary-light); color: white; border-color: var(--primary-light); }
+
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1rem;
+        }
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+            border-radius: 8px 8px 0 0;
+        }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            background: var(--bg);
+        }
+        .main-content { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+        .tab-pane { display: none; animation: fade 0.2s ease; }
+        .tab-pane.active-pane { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+        .card {
+            background: var(--surface);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+        }
+        .btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); }
+        .feedback { margin-top: 1rem; padding: 1rem; border-radius: 1rem; }
+        .feedback.correct { background: #d1fae5; color: #065f46; }
+        .feedback.wrong { background: #fee2e2; color: #b91c1c; }
+        .progress-bar { height: 8px; background: var(--border); border-radius: 4px; margin: 1rem 0; }
+        .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; width: 0%; transition: 0.2s; }
+
+        .subjects-grid { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .subject-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .subject-chip.active, .subject-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .chart-svg { width: 100%; max-height: 200px; background: var(--surface); border-radius: 1rem; }
+
+        @media (max-width: 680px) {
+            .app-header { flex-direction: column; align-items: stretch; }
+            .tabs { overflow-x: auto; }
+            .main-content { padding: 1rem; }
+        }
+        .badge { background: var(--primary-light); padding: 0.25rem 0.6rem; border-radius: 1rem; font-size: 0.8rem; color: white; display: inline-block; }
+        .score-stats { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+        .correction-block {
+            background: var(--bg);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+<header class="app-header">
+    <div class="logo"><h1>📚 Brevet 2026</h1><p>Histoire · Géo · EMC — DNB officiel</p></div>
+    <div class="header-actions">
+        <button id="darkModeToggle" class="btn-icon" aria-label="Mode sombre">🌙 Sombre</button>
+        <button id="dysToggle" class="btn-icon" aria-label="Police dyslexique">🅾 Dys</button>
+        <span id="liveDate" class="btn-icon" style="background:transparent"></span>
+    </div>
+</header>
+
+<nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="accueil">🏠 Accueil</button>
+    <button class="tab-btn" data-tab="qcm">📚 QCM</button>
+    <button class="tab-btn" data-tab="redaction">✍️ Développement</button>
+    <button class="tab-btn" data-tab="documents">📄 Étude de docs</button>
+    <button class="tab-btn" data-tab="scores">📈 Mes scores</button>
+</nav>
+
+<main class="main-content">
+    <!-- ACCUEIL -->
+    <div id="accueil" class="tab-pane active-pane">
+        <div class="card"><h2>🏆 Prêt pour le Brevet 2026 ?</h2><p>Révise avec nos modules interactifs : QCM aléatoire, développement construit (≥30 lignes) avec corrigés types, étude de documents type épreuve. Suivez vos progrès.</p><hr style="margin:1rem 0"><p>✅ Coefficient 2 – Épreuve de 2h.<br>✅ Plus de 60 questions, 9 sujets de rédaction (avec correction complète), 6 études de documents.<br>✅ Sauvegarde automatique de vos scores.</p></div>
+    </div>
+
+    <!-- QCM -->
+    <div id="qcm" class="tab-pane">
+        <div class="card">
+            <h2>⭐ QCM interactif – 15 questions aléatoires (5H+5G+5EMC)</h2>
+            <div id="qcmStatus">Score : 0/15 | Progression</div>
+            <div class="progress-bar"><div id="qcmProgressFill" class="progress-fill"></div></div>
+            <div id="qcmQuestionArea"></div>
+            <div id="qcmFeedback" class="feedback" style="display:none;"></div>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <button id="nextQcmBtn" class="btn" style="display:none;">Question suivante →</button>
+                <button id="resetQcmBtn" class="btn-outline btn">🔄 Recommencer</button>
+                <button id="detailsQcmBtn" class="btn-outline btn">📊 Voir le détail (toutes les bonnes réponses)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DÉVELOPPEMENT CONSTRUIT (avec corrigés complets) -->
+    <div id="redaction" class="tab-pane">
+        <div class="card">
+            <h2>✍️ Entraînement au développement construit (≥30 lignes)</h2>
+            <div class="subjects-grid" id="sujetsContainer"></div>
+            <div id="sujetDetail" style="margin-top: 1.5rem;"></div>
+            <div><textarea id="essayText" rows="12" placeholder="Rédigez votre développement ici (au moins 30 lignes / 250 mots environ)"></textarea></div>
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                <span id="wordLineCounter">📝 0 mots · 0 lignes</span>
+                <div>
+                    <button id="clearEssayBtn" class="btn-outline">Effacer ma rédaction</button>
+                    <button id="showCorrectionBtn" class="btn-outline" style="margin-left:0.5rem;">📖 Voir un corrigé type</button>
+                </div>
+            </div>
+            <div id="fullCorrectionArea" style="margin-top: 1rem; display: none;"></div>
+        </div>
+    </div>
+
+    <!-- ÉTUDE DE DOCUMENTS -->
+    <div id="documents" class="tab-pane">
+        <div class="card">
+            <h2>🔍 Exercice 1 – Analyse de documents (15 points)</h2>
+            <div class="subjects-grid" id="docsList"></div>
+            <div id="docDisplay" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+
+    <!-- MES SCORES -->
+    <div id="scores" class="tab-pane">
+        <div class="card">
+            <h2>📈 Historique des sessions QCM</h2>
+            <div class="score-stats"><span id="bestScoreSpan">🏅 Meilleur : --</span> <span id="avgScoreSpan">📊 Moyenne : --</span> <span id="nbSessionsSpan">📌 Sessions : 0</span><button id="resetScoresBtn" class="btn-outline">🗑️ Réinitialiser tous mes scores</button></div>
+            <div id="miniChart" style="margin: 1.5rem 0;"></div>
+            <p><em>Dernières 10 sessions sauvegardées (score /15)</em></p>
+        </div>
+    </div>
+</main>
+
+<script>
+    // --------------------------------------------------------------
+    // 1. POOL DE 60 QUESTIONS (20H,20G,20EMC) - exact et niveau brevet
+    // --------------------------------------------------------------
+    const questionsPool = [];
+    function addQ(category, text, options, correct, explanation) { questionsPool.push({ category, text, options, correct, explanation }); }
+    // HISTOIRE (20)
+    addQ('H', "Quel événement déclenche la Première Guerre mondiale en 1914 ?", ["Assassinat de Jean Jaurès", "Assassinat de François-Ferdinand à Sarajevo", "Déclaration de guerre allemande", "Incident d'Agadir"], 1, "L'assassinat de l'archiduc François-Ferdinand à Sarajevo (28 juin 1914) est l'événement déclencheur.");
+    addQ('H', "Quel traité met fin à la Première Guerre mondiale ?", ["Traité de Versailles (1919)", "Traité de Trianon", "Traité de Brest-Litovsk", "Traité de Paris"], 0, "Le traité de Versailles, signé en 1919, impose des conditions sévères à l'Allemagne.");
+    addQ('H', "Quelle crise économique mondiale éclate en 1929 ?", ["Crise des subprimes", "Krach boursier de Wall Street", "Grande dépression anglaise", "Crise de la Ruhr"], 1, "Le krach de Wall Street en octobre 1929 provoque la Grande Dépression.");
+    addQ('H', "Qui dirige la France libre pendant la Seconde Guerre mondiale ?", ["Philippe Pétain", "Charles de Gaulle", "Jean Moulin", "Léon Blum"], 1, "Le général de Gaulle lance l'appel du 18 juin 1940 depuis Londres.");
+    addQ('H', "Qu'est-ce que la 'guerre d'anéantissement' (Seconde Guerre mondiale) ?", ["Guerre utilisant des chars", "Guerre visant à détruire totalement l'ennemi et les civils", "Guerre économique", "Guerre uniquement aérienne"], 1, "Notion associée aux violences extrêmes, génocides et bombardements massifs.");
+    addQ('H', "Quel génocide est perpétré par le régime nazi ?", ["Génocide arménien", "Génocide des Tutsi", "Shoah (génocide des Juifs)", "Génocide cambodgien"], 2, "La Shoah, extermination systématique de 6 millions de Juifs.");
+    addQ('H', "Que signifie 'blocus de Berlin' (1948-49) ?", ["URSS bloque les accès terrestres à Berlin-Ouest", "USA bloque Berlin-Est", "Construction du mur", "Traité de paix"], 0, "Staline bloque les voies d'accès, pont aérien allié.");
+    addQ('H', "Quelles sont les deux grandes puissances de la Guerre froide ?", ["France et Allemagne", "URSS et États-Unis", "Chine et Japon", "Royaume-Uni et URSS"], 1, "Bloc de l'Ouest (USA) contre bloc de l'Est (URSS).");
+    addQ('H', "Année de l'indépendance de l'Algérie ?", ["1954", "1962", "1947", "1956"], 1, "Accords d'Évian (1962) après huit ans de guerre.");
+    addQ('H', "Quel discours lance la construction européenne (1950) ?", ["Discours de La Baule", "Discours de Robert Schuman", "Plan Marshall", "Traité de Rome"], 1, "Déclaration Schuman (9 mai 1950) création CECA.");
+    addQ('H', "Quel événement marque la fin de la guerre froide ?", ["Chute du mur de Berlin (1989)", "Guerre du Kosovo", "Accords d'Helsinki", "Invasion de l'Afghanistan"], 0, "1989-1991 dislocation URSS.");
+    addQ('H', "Que signifie 'GPRF' (1944-1946) ?", ["Gouvernement provisoire de la République française", "Grand Parti républicain français", "Groupement pour la reconstruction", "Gaullisme"], 0, "Dirigé par de Gaulle, nationalisations, Sécurité sociale.");
+    addQ('H', "Quelle loi accorde le droit de vote aux femmes en France ?", ["1944", "1945", "1946", "1936"], 0, "Ordonnance du 21 avril 1944, exercé pour la première fois en 1945.");
+    addQ('H', "Qu'est-ce que le 'plan Marshall' ?", ["Aide américaine à l'Europe (1947)", "Plan de réarmement", "Traité de paix", "Aide soviétique"], 0, "Aide économique massive des États-Unis pour contrer le communisme.");
+    addQ('H', "Qui était le leader de la Résistance intérieure française, arrêté par Klaus Barbie ?", ["Jean Moulin", "Lucie Aubrac", "Philippe de Gaulle", "Pierre Brossolette"], 0, "Jean Moulin, unificateur des mouvements de Résistance, mort en 1943.");
+    addQ('H', "Conférence qui organise la décolonisation et le Tiers-monde ?", ["Yalta", "Bandung (1955)", "Potsdam", "San Francisco"], 1, "Conférence de Bandung (Indonésie) origine du mouvement des non-alignés.");
+    addQ('H', "Traité fondateur de la CEE (1957) :", ["Traité de Rome", "Traité de Maastricht", "Traité de Lisbonne", "Traité de Paris"], 0, "Traité de Rome signé par France, Allemagne, Italie, Benelux.");
+    addQ('H', "Attentats du 11 septembre 2001 :", ["Attaque contre le Pentagone et les Twin Towers", "Attentats de Madrid", "Attentats de Londres", "Bataille de Mossoul"], 0, "Début d'un nouvel âge du terrorisme islamiste.");
+    addQ('H', "Qui a écrit le 'Chant des Partisans' ?", ["Joseph Kessel et Maurice Druon", "Jean Moulin", "De Gaulle", "Aragon"], 0, "Hymne de la Résistance française, 1943.");
+    addQ('H', "Date de la chute du mur de Berlin :", ["9 novembre 1989", "3 octobre 1990", "26 décembre 1991", "17 juin 1953"], 0, "Symbole de la fin de la guerre froide.");
+    // GÉOGRAPHIE (20)
+    addQ('G', "Qu'est-ce que la métropolisation ?", ["Concentration des populations et activités dans les grandes villes", "Développement des zones rurales", "Construction de métros", "Exode rural"], 0, "Les métropoles comme Paris, Lyon concentrent fonctions de commandement.");
+    addQ('G', "Quel espace productif est marqué par la viticulture en France ?", ["Industrie automobile", "Tourisme balnéaire", "Espace agricole spécialisé (Bordeaux, Champagne)", "Pôle de compétitivité"], 2, "Les espaces agricoles à haute valeur ajoutée.");
+    addQ('G', "Que sont les 'zones peu peuplées' (diagonale des faibles densités) ?", ["Sud-ouest", "Nord-Est", "Diagonale allant des Ardennes aux Landes", "Côte d'Azur"], 2, "Espaces ruraux, montagneux, sous contraintes.");
+    addQ('G', "Quel aménagement réduit les inégalités territoriales en France ?", ["TGV", "ANRU (rénovation urbaine)", "Politique de la ville et contrats de plan", "Autoroutes"], 2, "Contrats de plan État-Régions, pôles d'excellence rurale.");
+    addQ('G', "Vrai/faux: les DROM-COM (outre-mer) bénéficient d'atouts comme la biodiversité.", ["Vrai", "Faux"], 0, "Atouts : biodiversité, zone économique exclusive, défis : éloignement.");
+    addQ('G', "Quelle institution européenne gère la PAC ?", ["Parlement européen", "Commission européenne", "Conseil européen", "BCE"], 1, "Politique agricole commune gérée par la Commission.");
+    addQ('G', "Quel pays n'appartient pas à l'UE ?", ["Allemagne", "Suisse", "Espagne", "Pologne"], 1, "La Suisse n'est pas membre de l'UE mais dans l'espace Schengen.");
+    addQ('G', "La France est-elle une puissance mondiale ?", ["Oui, nucléaire, siège à l'ONU, influence culturelle", "Non, pays moyen", "Uniquement en Europe", "Dépend de l'Allemagne"], 0, "Membre permanent du Conseil de sécurité, rayonnement diplomatique.");
+    addQ('G', "Qu'est-ce qu'un 'espace productif industriel' en reconversion ?", ["Nord-Pas-de-Calais (charbon)", "Silicone Valley", "Pôle de compétitivité", "ZAC"], 0, "Anciens bassins miniers orientés vers logistique, tertiaire.");
+    addQ('G', "Laquelle de ces villes est une métropole européenne majeure ?", ["Lyon", "Berlin", "Milan", "Toutes"], 3, "Berlin, Londres, Paris, Milan sont des métropoles d'importance mondiale.");
+    addQ('G', "Quels territoires ultramarins sont des départements français ?", ["Martinique, Guadeloupe, Réunion", "Saint-Pierre-et-Miquelon", "Nouvelle-Calédonie", "Polynésie"], 0, "DROM : Guadeloupe, Martinique, Guyane, La Réunion, Mayotte.");
+    addQ('G', "La 'Région parisienne' concentre environ combien de pourcents du PIB français ?", ["10%", "30%", "50%", "70%"], 1, "Environ 30% du PIB, forte métropolisation.");
+    addQ('G', "Quel enjeu majeur pour l'aménagement du territoire français ?", ["Désertification médicale", "Transitions écologique et numérique", "Renouvellement urbain", "Tous"], 3, "Inégalités, mobilités durables, fracture numérique.");
+    addQ('G', "L'UE est-elle le premier pôle commercial mondial ?", ["Oui, avec la Chine et USA", "Non", "Seulement de services", "Troisième"], 0, "L'Union européenne est une grande puissance commerciale, première importatrice/exportatrice.");
+    addQ('G', "Qu'est-ce que le 'hard Brexit' ?", ["Sortie sans accord", "Partenariat privilégié", "Maintien dans le marché unique", "Nouveau référendum"], 0, "Le Royaume-Uni a quitté l'UE en janvier 2020 avec divorce définitif.");
+    addQ('G', "Nommez une aire urbaine en croissance rapide en France.", ["Toulouse", "Dijon", "Limoges", "Saint-Étienne"], 0, "Métropole toulousaine dynamique (aéronautique, numérique).");
+    addQ('G', "Quel espace productif correspond au tourisme littoral (Côte d'Azur) ?", ["Espace de service", "Espace agricole", "Espace industriel", "Espace de loisirs et résidentiel"], 3, "Tourisme balnéaire génère emplois, aménagements spécifiques.");
+    addQ('G', "Le terme 'ZAN' (zéro artificialisation nette) concerne :", ["Gestion des sols", "Énergies renouvelables", "Transport", "Numérique"], 0, "Loi Climat et résilience (2021) lutte contre l'artificialisation.");
+    addQ('G', "Quelle organisation régionale lie la France et l'Allemagne moteur de l'UE ?", ["Conseil franco-allemand", "Traité de l'Élysée", "CECA", "Médiateur européen"], 1, "Traité de l'Élysée (1963) scelle réconciliation.");
+    addQ('G', "La France se classe parmi les premières destinations touristiques mondiales (vrai/faux) ?", ["Vrai, environ 90M visiteurs/an", "Faux"], 0, "Vrai, devant Espagne et États-Unis.");
+    // EMC (20)
+    addQ('E', "Qu'est-ce que le service civique en France ?", ["Service militaire", "Engagement volontaire de 6 à 12 mois pour jeune 16-25 ans", "Stage obligatoire", "Contrat d'apprentissage"], 1, "Mission d'intérêt général, rémunérée, citoyenneté active.");
+    addQ('E', "La nationalité française peut s'obtenir par :", ["Droit du sol (naissance en France)", "Droit du sang", "Naturalisation", "Toutes ces réponses"], 3, "Plusieurs modes : filiation, naissance, mariage, décret.");
+    addQ('E', "Le principe de laïcité (1905) repose sur :", ["Liberté de conscience et séparation Églises-État", "Religion d'État", "Interdiction des signes religieux", "Culte unique"], 0, "Loi de 1905 garantit neutralité de l'État.");
+    addQ('E', "Quelle valeur de la République incarne l'impôt progressif ?", ["Liberté", "Égalité", "Fraternité", "Laïcité"], 1, "Solidarité fiscale, réduction des inégalités.");
+    addQ('E', "Le conseil municipal des jeunes (CMJ) :", ["Structure fictive", "Instance participative pour les 11-18 ans", "Cour des comptes junior", "Ministère"], 1, "Donne la parole aux jeunes, projets citoyens.");
+    addQ('E', "Qui élit le Président de la République en France ?", ["Suffrage universel direct", "Parlement", "Sénat", "Conseil constitutionnel"], 0, "Élection au suffrage universel direct depuis 1965 (quinquennat).");
+    addQ('E', "La Charte de la laïcité à l'école a été publiée en :", ["2004", "2013", "1989", "2000"], 1, "Charte de 2013 rappelle les règles dans les établissements scolaires.");
+    addQ('E', "L'égalité femmes-hommes est inscrite dans la Constitution française (article 1er) :", ["Vrai", "Faux"], 0, "Oui depuis 1999, loi pour l'égalité réelle.");
+    addQ('E', "Le droit de vote a été accordé aux 18 ans en France en :", ["1974", "1962", "1958", "1981"], 0, "Sous la présidence de Valéry Giscard d'Estaing.");
+    addQ('E', "Qu'est-ce que la désinformation ?", ["Partage volontaire de fausses informations", "Rumeur involontaire", "Publicité mensongère", "Opinion"], 0, "Menace pour la démocratie, nécessité d'EMI.");
+    addQ('E', "La liberté de la presse est protégée par la loi de 1881. Quelle institution veille à la déontologie ?", ["CSA/Arcom", "CNIL", "Défenseur des droits", "HADOPI"], 0, "Arcom régule médias, lutte contre manipulation.");
+    addQ('E', "La Défense globale inclut :", ["Militaire, cyber, résilience", "Seulement l'armée", "Gendarmerie", "Police"], 0, "Livre blanc 2013, sécurité nationale et cyberdéfense.");
+    addQ('E', "Quelle menace pèse sur l'État de droit ?", ["Populisme autoritaire", "Chômage", "Crise climatique", "Migration"], 0, "Remise en cause des contre-pouvoirs et libertés fondamentales.");
+    addQ('E', "Quel est le symbole du sceau de la République ?", ["Marianne", "Coq", "Faisceau de licteur", "Drapeau"], 2, "Le faisceau (République) sur le grand sceau, Marianne allégorie.");
+    addQ('E', "Le référendum est un outil de démocratie :", ["Directe", "Représentative", "Participative", "Déléguée"], 0, "Suffrage direct, le peuple vote une loi.");
+    addQ('E', "Qui peut être candidat à l'élection présidentielle ?", ["Tout citoyen français ayant 500 parrainages", "Tout majeur", "Ancien ministre", "Membre du parlement"], 0, "Règles du Conseil constitutionnel.");
+    addQ('E', "Dans la devise 'Liberté, Égalité, Fraternité', la fraternité renvoie :", ["Solidarité et devoir d'assistance", "Égalité des chances", "Laïcité", "Neutralité"], 0, "Entraide, sécurité sociale, devoir national.");
+    addQ('E', "La liberté d'expression peut être limitée pour :", ["Discours haineux", "Calomnie", "Violation vie privée", "Toutes ces raisons"], 3, "Limites prévues par la loi (racisme, diffamation…).");
+    addQ('E', "Le 'droit de vote des étrangers' aux élections locales est :", ["Possible pour les ressortissants UE", "Interdit", "Universel", "Sous conditions"], 0, "Oui pour les citoyens européens ; débat sur le droit de vote des étrangers hors UE.");
+    addQ('E', "Quel organe contrôle la constitutionnalité des lois ?", ["Conseil constitutionnel", "Cour de cassation", "Conseil d'État", "Assemblée"], 0, "Saisi par 60 députés ou sénateurs, président, 1er ministre.");
+
+    // ----- QCM -----
+    let currentQcmQuestions = [];
+    let currentQIndex = 0;
+    let qcmScore = 0;
+    let qcmAnswered = false;
+    let sessionComplete = false;
+    const qcmDiv = document.getElementById("qcmQuestionArea");
+    const feedbackDiv = document.getElementById("qcmFeedback");
+    const nextBtn = document.getElementById("nextQcmBtn");
+    const resetBtn = document.getElementById("resetQcmBtn");
+    const detailsBtn = document.getElementById("detailsQcmBtn");
+    
+    function pickRandomBalanced() {
+        const hist = questionsPool.filter(q => q.category === 'H');
+        const geo = questionsPool.filter(q => q.category === 'G');
+        const emc = questionsPool.filter(q => q.category === 'E');
+        const getRandom = (arr, n) => arr.sort(() => 0.5 - Math.random()).slice(0, n);
+        return [...getRandom(hist,5), ...getRandom(geo,5), ...getRandom(emc,5)].sort(() => Math.random() - 0.5);
+    }
+    function renderCurrentQuestion() {
+        if (!currentQcmQuestions.length || currentQIndex >= currentQcmQuestions.length) return;
+        const q = currentQcmQuestions[currentQIndex];
+        let html = `<div class="question"><strong>Question ${currentQIndex+1}/15 (${q.category})</strong><br>${q.text}</div><div class="options" style="margin:1rem 0">`;
+        q.options.forEach((opt, idx) => { html += `<label style="display:block; margin:0.5rem 0"><input type="radio" name="qcmOpt" value="${idx}"> ${opt}</label>`; });
+        html += `</div><button id="validateQcmBtn" class="btn">Valider ma réponse</button>`;
+        qcmDiv.innerHTML = html;
+        document.getElementById("validateQcmBtn")?.addEventListener("click", validateAnswer);
+        qcmAnswered = false;
+        feedbackDiv.style.display = "none";
+        nextBtn.style.display = "none";
+    }
+    function validateAnswer() {
+        if (qcmAnswered || sessionComplete) return;
+        const selected = document.querySelector('input[name="qcmOpt"]:checked');
+        if (!selected) { alert("Choisis une réponse !"); return; }
+        const val = parseInt(selected.value);
+        const q = currentQcmQuestions[currentQIndex];
+        const isCorrect = (val === q.correct);
+        if (isCorrect) qcmScore++;
+        qcmAnswered = true;
+        feedbackDiv.style.display = "block";
+        feedbackDiv.className = `feedback ${isCorrect ? "correct" : "wrong"}`;
+        feedbackDiv.innerHTML = `${isCorrect ? "✅ Correct !" : "❌ Incorrect"}<br>${q.explanation}`;
+        document.querySelectorAll('input[name="qcmOpt"]').forEach(r => r.disabled = true);
+        document.getElementById("validateQcmBtn")?.remove();
+        if (currentQIndex+1 === 15) { nextBtn.textContent = "🏁 Terminer et voir score"; } 
+        else { nextBtn.textContent = "Question suivante →"; }
+        nextBtn.style.display = "inline-block";
+        updateQcmProgress();
+    }
+    function nextQuestion() {
+        if (!qcmAnswered && !(currentQIndex+1===15 && sessionComplete)) return;
+        if (currentQIndex+1 === 15) { finishQcm(); } 
+        else { currentQIndex++; qcmAnswered = false; renderCurrentQuestion(); updateQcmProgress(); nextBtn.style.display = "none"; }
+    }
+    function finishQcm() {
+        if (sessionComplete) return;
+        sessionComplete = true;
+        feedbackDiv.innerHTML += `<div style="margin-top:1rem;"><strong>🎯 Score final : ${qcmScore}/15 (soit ${Math.round(qcmScore/15*20)}/20) Mention : ${getMention(qcmScore)}</strong></div>`;
+        saveQcmScore(qcmScore);
+        updateScoreDashboard();
+        nextBtn.style.display = "none";
+    }
+    function getMention(score) { if(score<6) return "Passable"; if(score<10) return "Assez Bien"; if(score<13) return "Bien"; return "Très Bien"; }
+    function updateQcmProgress() {
+        document.getElementById("qcmStatus").innerHTML = `Score : ${qcmScore}/15 | Question ${currentQIndex+1}/15`;
+        document.getElementById("qcmProgressFill").style.width = `${((currentQIndex+(qcmAnswered?1:0))/15)*100}%`;
+    }
+    function resetQcm() {
+        currentQcmQuestions = pickRandomBalanced();
+        currentQIndex = 0; qcmScore = 0; qcmAnswered = false; sessionComplete = false;
+        renderCurrentQuestion(); updateQcmProgress(); nextBtn.style.display = "none"; feedbackDiv.style.display = "none";
+    }
+    function showAllDetails() {
+        let msg = "📋 Toutes les bonnes réponses:\n";
+        questionsPool.forEach(q => { msg += `\n▪ ${q.text} → ${q.options[q.correct]} : ${q.explanation}`; });
+        alert(msg);
+    }
+    nextBtn.addEventListener("click", nextQuestion);
+    resetBtn.addEventListener("click", resetQcm);
+    detailsBtn.addEventListener("click", showAllDetails);
+    
+    // ----- SUJETS DÉVELOPPEMENT avec CORRIGÉS complets (rédaction modèle) -----
+    const subjects = [
+        { title: "Les violences de masse durant la Seconde Guerre mondiale", 
+          intro: "La Seconde Guerre mondiale (1939-1945) est une guerre d'anéantissement sans précédent...",
+          plan: "I/ Violences aux combattants (bombardements, Stalingrad) II/ Génocide des Juifs et Tziganes (Shoah) III/ Violences contre les civils (exactions, déplacements)",
+          conclusion: "Cette guerre a industrialisé la mort et bouleversé les équilibres mondiaux.",
+          keywords: "génocide, guerre totale, Einsatzgruppen, camps, Vichy",
+          dates: "1939-1945, 1942 (Wannsee)",
+          fullCorrection: "Durant la Seconde Guerre mondiale, les violences atteignent une intensité inédite. D'abord, les combats sont d'une extrême brutalité : guerre éclair, bombardements massifs des villes (Dresde, Londres) et bataille de Stalingrad où les pertes humaines se comptent en millions. Ensuite, le génocide des Juifs (Shoah) et des Tziganes est perpétré par le régime nazi : Einsatzgruppen, ghettos, camps d'extermination (Auschwitz). Six millions de Juifs sont assassinés. Enfin, les civils subissent réquisitions, massacres de représailles (Oradour-sur-Glane) et déplacements forcés. Ces violences de masse transforment profondément les sociétés et justifient la création du tribunal de Nuremberg pour crimes contre l'humanité." },
+        { title: "Métropolisation en France : dynamiques et inégalités", 
+          intro: "La France connaît une métropolisation croissante...",
+          plan: "I/ Les métropoles, moteurs de l'économie II/ Mobilités et étalement urbain III/ Fractures territoriales",
+          conclusion: "Les métropoles sont attractives mais creusent les écarts avec les zones rurales.",
+          keywords: "aire urbaine, périurbanisation, technopôle, ségrégation",
+          dates: "XXIe siècle, 2020",
+          fullCorrection: "La métropolisation désigne la concentration des populations, activités et fonctions de commandement dans les grandes agglomérations. En France, Paris, Lyon et Toulouse concentrent emplois qualifiés, universités et sièges sociaux. Les mobilités quotidiennes augmentent avec l'étalement urbain : les périurbains parcourent de longues distances. Cependant, cette dynamique crée des inégalités territoriales : déserts médicaux, accès aux services réduits dans les campagnes (diagonale des faibles densités). Les politiques d'aménagement (contrats de plan, TGV) tentent de rééquilibrer le territoire, mais la métropolisation reste un défi majeur pour la cohésion nationale." },
+        { title: "La laïcité garantit-elle le vivre-ensemble ?", 
+          intro: "La laïcité française, issue de la loi de 1905...",
+          plan: "I/ Principe de neutralité de l'État II/ Application à l'école (charte, affaires du voile) III/ Enjeux contemporains (atteintes, dialogue)",
+          conclusion: "La laïcité protège la liberté de conscience et permet le vivre-ensemble, à condition d'être expliquée.",
+          keywords: "neutralité, séparation, signes religieux, EMI",
+          dates: "1905, 2004 (loi sur les signes), 2013 (charte)",
+          fullCorrection: "La loi de 1905 pose la liberté de conscience et la séparation des Églises et de l'État. Aujourd'hui, la laïcité garantit que chacun peut croire ou ne pas croire, sans que l'État ne favorise aucune religion. À l'école, elle impose la neutralité du service public et interdit les signes religieux ostensibles (loi 2004). La charte de la laïcité (2013) rappelle ces règles. Cependant, des tensions émergent (atteintes à la liberté d'expression, controverses sur le voile). La laïcité n'est pas une opposition au religieux mais un cadre qui permet le vivre-ensemble, à condition de développer l'esprit critique et le dialogue." },
+        { title: "La construction européenne de 1957 à nos jours", 
+          intro: "L'Union européenne est le fruit d'une construction progressive...",
+          plan: "I/ Les traités fondateurs (Rome, Maastricht) II/ Élargissements et crises (Brexit) III/ Enjeux actuels (migrations, souveraineté)",
+          conclusion: "L'UE reste une réussite majeure de paix et de prospérité, mais doit relever des défis démocratiques.",
+          keywords: "marché unique, euro, CECA, élargissement, Brexit",
+          dates: "1957 (Traité de Rome), 1992 (Maastricht), 2004 (élargissement Est), 2020 (Brexit)",
+          fullCorrection: "La construction européenne débute en 1950 avec la déclaration Schuman, puis la CECA (1951). Le traité de Rome (1957) crée la CEE, marché commun. En 1992, Maastricht fonde l'Union européenne, l'euro arrive en 2002. L'UE s'élargit : 1973 (Royaume-Uni), 2004 (pays d'Europe de l'Est). Elle connaît des crises : rejet de la constitution, crise des dettes, Brexit (2020). Aujourd'hui, l'UE doit gérer les flux migratoires, la transition écologique et retrouver la confiance des citoyens. Malgré les tensions, elle incarne un espace de paix et de stabilité unique au monde." },
+        { title: "La décolonisation : processus et conséquences (1947-1962)", 
+          intro: "Après 1945, les empires coloniaux sont contestés...",
+          plan: "I/ Guerre d'Indochine (1946-1954) II/ Guerre d'Algérie (1954-1962) III/ Naissance du Tiers-monde",
+          conclusion: "La décolonisation redessine les relations internationales et crée de nombreux États.",
+          keywords: "accords d'Évian, FLN, non-alignement, conférence de Bandung",
+          dates: "1954 (défaite Diên Biên Phu), 1962 (indépendance Algérie)",
+          fullCorrection: "La décolonisation commence après la Seconde Guerre mondiale, affaiblissant les métropoles. En Asie, la guerre d'Indochine oppose la France au Vietminh ; la chute de Diên Biên Phu (1954) mène aux accords de Genève. En Afrique, la guerre d'Algérie (1954-1962) est particulièrement violente (attentats, torture). Les accords d'Évian (1962) donnent l'indépendance à l'Algérie. La plupart des colonies d'Afrique subsaharienne deviennent indépendantes en 1960. Les nouveaux États se rassemblent à Bandung (1955) pour former le Tiers-monde, neutre face à la guerre froide. Les conséquences sont majeures : frontières héritées, migrations, liens postcoloniaux (Françafrique)." },
+        { title: "La France et l'Union européenne dans le monde", 
+          intro: "La France, membre fondateur de l'UE, est une puissance moyenne influente...",
+          plan: "I/ Atouts : nucléaire, ONU, diplomatie II/ L'UE comme levier III/ Limites (concurrence, influence relative)",
+          conclusion: "L'alliance franco-allemande reste moteur de l'Europe, mais le monde est multipolaire.",
+          keywords: "soft power, hard power, G7, OTAN, francophonie",
+          dates: "1957, 1963 (traité Élysée)",
+          fullCorrection: "La France possède des atouts : membre permanent du Conseil de sécurité, dissuasion nucléaire, réseau diplomatique étendu, première destination touristique. Au sein de l'UE, elle pèse pour une Europe plus souveraine (défense, commerce). L'UE elle-même est un pôle commercial mondial, avec des normes environnementales et numériques. Cependant, la concurrence des États-Unis et de la Chine limite son influence. La France doit aussi faire face au défi migratoire et aux tensions internes (montée des eurosceptiques). Malgré ces limites, l'action commune européenne renforce le poids diplomatique de la France." },
+        { title: "Principes et valeurs de la République française", 
+          intro: "La République française repose sur des principes hérités de 1789...",
+          plan: "I/ Libertés fondamentales II/ Égalité (droit, chances) III/ Fraternité et solidarité",
+          conclusion: "Ces valeurs forment le socle de la citoyenneté et de la cohésion nationale.",
+          keywords: "contrat social, droit de vote, laïcité, sécurité sociale",
+          dates: "1789, 1946, 1958",
+          fullCorrection: "La devise 'Liberté, Égalité, Fraternité' résume les valeurs républicaines. La liberté (d'expression, de réunion, de conscience) est encadrée par la loi. L'égalité est formelle (tous égaux devant la loi) et réelle (réduction des inégalités via impôts, services publics). La fraternité se manifeste par la solidarité : sécurité sociale, allocations familiales, service civique. Ces principes sont inscrits dans la Constitution (1958) et la Déclaration des droits de l'homme. Ils garantissent la démocratie, mais restent à défendre chaque jour contre les discriminations et le repli identitaire." },
+        { title: "Médias et désinformation : enjeux démocratiques", 
+          intro: "Dans une démocratie, la liberté de la presse est essentielle...",
+          plan: "I/ Rôle des médias (informer, contre-pouvoir) II/ Menaces (fake news, réseaux sociaux) III/ Éducation aux médias (EMI)",
+          conclusion: "L'esprit critique est l'arme contre la désinformation.",
+          keywords: "liberté de la presse, loi 1881, ARCOM, CNIL",
+          dates: "1881 (loi sur la presse), 2018 (loi contre la manipulation)",
+          fullCorrection: "Les médias (presse, TV, internet) informent les citoyens et contrôlent le pouvoir. La loi de 1881 garantit la liberté de la presse. Cependant, la désinformation se développe : fausses nouvelles, théories du complot, manipulation via les réseaux sociaux. Cela menace le débat démocratique. Des lois encadrent la lutte contre les fake news (2018). L'éducation aux médias (EMI) apprend aux élèves à vérifier les sources, identifier les biais. Chaque citoyen doit adopter un regard critique. La liberté d'expression a des limites (discours haineux) pour protéger la démocratie." },
+        { title: "La guerre froide : affrontement Est-Ouest", 
+          intro: "Après 1947, le monde est divisé entre deux blocs...",
+          plan: "I/ La formation des blocs (plan Marshall, Kominform) II/ Crises (Berlin, Cuba) III/ Détente et fin (1989-1991)",
+          conclusion: "La guerre froide a structuré les relations internationales pendant 45 ans.",
+          keywords: "rideau de fer, OTAN, pacte de Varsovie, mur de Berlin",
+          dates: "1947 (doctrine Truman), 1962 (crise de Cuba), 1989 (chute mur)",
+          fullCorrection: "La guerre froide oppose les États-Unis (bloc occidental) et l'URSS (bloc communiste) sans affrontement direct. En 1947, le plan Marshall aide l'Europe de l'Ouest ; l'URSS crée le Kominform. Le rideau de fer coupe l'Europe. Crises majeures : blocus de Berlin (1948-49), construction du mur (1961), crise des missiles à Cuba (1962, moment le plus dangereux). Chaque camp accumule les armes nucléaires (équilibre de la terreur). Une détente survient (années 1970, accords SALT) mais reprend avec l'invasion de l'Afghanistan (1979). La chute du mur de Berlin (1989) puis l'éclatement de l'URSS (1991) mettent fin au conflit. Cette période a marqué les mémoires." }
+    ];
+    
+    let activeSubject = null;
+    function renderSubjects() {
+        const container = document.getElementById("sujetsContainer");
+        container.innerHTML = subjects.map((s,i) => `<div class="subject-chip" data-idx="${i}">${s.title}</div>`).join('');
+        document.querySelectorAll('.subject-chip').forEach(el => el.addEventListener('click', (e) => {const idx = parseInt(e.currentTarget.dataset.idx); showSubjectDetail(subjects[idx]);}));
+    }
+    function showSubjectDetail(subj) {
+        activeSubject = subj;
+        document.getElementById("sujetDetail").innerHTML = `<div class="card"><h3>${subj.title}</h3><p><strong>📖 Introduction modèle :</strong> ${subj.intro}</p><p><strong>📝 Plan :</strong> ${subj.plan}</p><p><strong>✅ Conclusion modèle :</strong> ${subj.conclusion}</p><p><strong>🔑 Mots-clés :</strong> ${subj.keywords} | <strong>📅 Dates :</strong> ${subj.dates}</p><p><em>Check-list méthode : problématique, parties équilibrées, exemples, connecteurs logiques.</em></p></div>`;
+        // Masquer la zone de correction quand on change de sujet
+        document.getElementById("fullCorrectionArea").style.display = "none";
+    }
+    document.getElementById("showCorrectionBtn").addEventListener("click", () => {
+        if(!activeSubject) { alert("Choisissez d'abord un sujet ci-dessus."); return; }
+        const area = document.getElementById("fullCorrectionArea");
+        area.innerHTML = `<div class="correction-block"><strong>📄 Exemple de rédaction (corrigé type) :</strong><br>${activeSubject.fullCorrection}</div>`;
+        area.style.display = "block";
+    });
+    function updateWordLineCounter() {
+        const txt = document.getElementById("essayText").value;
+        const words = txt.trim() === "" ? 0 : txt.trim().split(/\s+/).length;
+        const lines = txt.split("\n").length;
+        document.getElementById("wordLineCounter").innerHTML = `📝 ${words} mots · ${lines} lignes ${lines>=30?"✅ (≥30 lignes)":"(viser 30+ lignes)"}`;
+    }
+    document.getElementById("essayText").addEventListener("input", updateWordLineCounter);
+    document.getElementById("clearEssayBtn").addEventListener("click", () => {document.getElementById("essayText").value = ""; updateWordLineCounter();});
+    
+    // ----- ÉTUDE DOCUMENTS (6) avec corrigés individuels -----
+    const docs = [
+        { title: "Lettre de poilu (1917)", content: "Source: extrait de correspondance d'un soldat français. '... souffrances, boue, obus, camarades morts...'", questions: ["1. Quelle est la nature du document ?", "2. Quelles violences décrit-il ?", "3. Que signifie 'guerre des tranchées' ?"], corrige: "1. Lettre personnelle (témoignage). 2. Bombardements, conditions extrêmes, morts. 3. Guerre d'usure, fronts stabilisés, difficultés sanitaires." },
+        { title: "Carte des aires urbaines en France (INSEE)", content: "Document: carte de la métropolisation. Paris, Lyon, Marseille concentrent les fonctions supérieures.", questions: ["1. Identifier source et date", "2. Citez deux métropoles françaises", "3. Expliquer la métropolisation"], corrige: "1. INSEE, 2020. 2. Paris, Lyon. 3. Concentration des activités tertiaires, emplois qualifiés, services rares." },
+        { title: "Charte de la laïcité (2013)", content: "Art 1 : La France est une République laïque, assure la liberté de conscience.", questions: ["1. Qu’affirme l’article 1 ?", "2. Pourquoi la laïcité protège-t-elle le vivre-ensemble ?"], corrige: "1. Neutralité de l'État, liberté de culte. 2. Empêche discriminations, garantit égalité et respect." },
+        { title: "Discours de Robert Schuman (1950)", content: "Extrait: 'L'Europe ne se fera pas d'un coup... par des réalisations concrètes'", questions: ["1. Nature, date", "2. Quelle idée clé ?", "3. Lien avec la CECA"], corrige: "1. Discours officiel, 9 mai 1950. 2. Construction européenne progressive. 3. Création CECA en 1951." },
+        { title: "Photo d'un bidonville de migrants à Calais (2016)", content: "Photographie: campements précaires à la frontière.", questions: ["1. Décrire la situation", "2. Problématique migratoire en Europe", "3. Solidarité ou rejet ?"], corrige: "1. Conditions indignes, migrants cherchant à passer au Royaume-Uni. 2. Défi humanitaire, politique d'asile. 3. Associations apportent aide, tensions politiques." },
+        { title: "Schéma du conseil municipal des jeunes (CMJ)", content: "Organigramme de la participation citoyenne locale.", questions: ["1. Qu'est-ce qu'un CMJ?", "2. Exemple d'action", "3. Quels apprentissages démocratiques?"], corrige: "1. Instance pour exprimer projets jeunes (11-18 ans). 2. Actions écologiques, solidarité. 3. Apprentissage du débat, responsabilité." }
+    ];
+    function renderDocsList() {
+        const cont = document.getElementById("docsList");
+        cont.innerHTML = docs.map((d,i) => `<div class="subject-chip" data-docidx="${i}">📄 ${d.title}</div>`).join('');
+        document.querySelectorAll('[data-docidx]').forEach(el => el.addEventListener('click', (e) => {showDoc(docs[parseInt(e.currentTarget.dataset.docidx)]);}));
+    }
+    function showDoc(doc) {
+        const div = document.getElementById("docDisplay");
+        div.innerHTML = `<div class="card"><h3>${doc.title}</h3><div style="background:var(--bg);padding:1rem;border-radius:1rem">📄 ${doc.content}</div><br><strong>Questions :</strong><ul>${doc.questions.map(q=>`<li>${q}</li>`).join('')}</ul><textarea id="docAnswer" rows="4" placeholder="Rédigez votre réponse..."></textarea><br><button id="showCorrigeBtn" class="btn-outline mt-2">📖 Voir un corrigé attendu</button><div id="corrigeArea" style="margin-top:1rem;"></div></div>`;
+        document.getElementById("showCorrigeBtn")?.addEventListener("click", () => { document.getElementById("corrigeArea").innerHTML = `<div class="feedback correct">✅ Corrigé type : ${doc.corrige}</div>`; });
+    }
+    
+    // ----- SCORES localStorage & graphique -----
+    let scoreHistory = [];
+    function loadScores() { const stored = localStorage.getItem("brevet_qcm_scores"); if(stored) scoreHistory = JSON.parse(stored); else scoreHistory = []; updateScoreDashboard(); }
+    function saveQcmScore(score) { scoreHistory.unshift({score, date: new Date().toLocaleDateString()}); if(scoreHistory.length>10) scoreHistory.pop(); localStorage.setItem("brevet_qcm_scores", JSON.stringify(scoreHistory)); updateScoreDashboard(); }
+    function updateScoreDashboard() {
+        const scoresList = scoreHistory.map(s=>s.score);
+        const best = scoresList.length ? Math.max(...scoresList) : "-";
+        const avg = scoresList.length ? (scoresList.reduce((a,b)=>a+b,0)/scoresList.length).toFixed(1) : "-";
+        document.getElementById("bestScoreSpan").innerHTML = `🏅 Meilleur : ${best}/15`;
+        document.getElementById("avgScoreSpan").innerHTML = `📊 Moyenne : ${avg}/15`;
+        document.getElementById("nbSessionsSpan").innerHTML = `📌 Sessions : ${scoresList.length}`;
+        const chartDiv = document.getElementById("miniChart");
+        if(scoresList.length===0) chartDiv.innerHTML = `<div>Aucune session enregistrée</div>`;
+        else {
+            let maxHeight = 120, barWidth = 30;
+            let svg = `<svg width="100%" height="160" viewBox="0 0 ${Math.max(300, scoresList.length*barWidth+40)} 160" xmlns="http://www.w3.org/2000/svg">`;
+            scoresList.forEach((s,i) => { let h = (s/15)*maxHeight; svg += `<rect x="${i*barWidth+10}" y="${140-h}" width="25" height="${h}" fill="#1e3a8a" rx="4"><title>${s}/15</title></rect>`; });
+            svg += `</svg>`; chartDiv.innerHTML = svg;
+        }
+    }
+    document.getElementById("resetScoresBtn")?.addEventListener("click", () => { localStorage.removeItem("brevet_qcm_scores"); scoreHistory=[]; updateScoreDashboard(); alert("Scores réinitialisés"); });
+    
+    // ----- UI globales: onglets, dark mode, dys, date -----
+    function setActiveTab(tabId) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active-pane'));
+        document.getElementById(tabId).classList.add('active-pane');
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    }
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', (e) => { setActiveTab(btn.dataset.tab); }));
+    document.getElementById("darkModeToggle").addEventListener("click", () => document.body.classList.toggle("dark"));
+    document.getElementById("dysToggle").addEventListener("click", () => document.body.classList.toggle("dyslexic"));
+    document.getElementById("liveDate").innerText = new Date().toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+    
+    // initialisation
+    resetQcm(); loadScores(); renderSubjects(); renderDocsList(); updateWordLineCounter();
+    if(subjects.length) showSubjectDetail(subjects[0]);
+    if(docs.length) showDoc(docs[0]);
+</script>
+</body>
+</html>
