@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👁️ Exercices d'Assiya</title>
+<style>
+:root{--v:#7c3aed;--p:#ec4899;--t:#0d9488;--vl:#ede9fe;--bg:#faf5ff;--tx:#1e1b4b;--gr:#6b7280;--sh:0 4px 24px rgba(124,58,237,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 35%,#ec4899 70%,#0d9488 100%);padding:36px 20px 56px;text-align:center;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:52px;background:var(--bg);border-radius:50% 50% 0 0/52px}
+.hdr-stars{position:absolute;inset:0;pointer-events:none}
+.st{position:absolute;color:rgba(255,255,255,.65);animation:twinkle 2.5s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.3)}}
+.hdr h1{color:#fff;font-size:26px;font-weight:900;text-shadow:0 2px 12px rgba(0,0,0,.25);position:relative;z-index:1}
+.hdr p{color:rgba(255,255,255,.9);font-size:14px;margin-top:6px;position:relative;z-index:1}
+.hdr-badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:50px;margin-top:10px;position:relative;z-index:1}
+
+/* LAYOUT */
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 60px}
+
+/* CARDS */
+.card{background:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
+.card-hd{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gr);margin-bottom:14px}
+
+/* GLASSES WARNING */
+.glasses-warn{background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2px solid #fbbf24;border-radius:16px;padding:14px 18px;margin-bottom:14px;font-size:14px;font-weight:600;color:#92400e;display:flex;align-items:center;gap:10px}
+
+/* CONSIGNES */
+.cg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cg-item{background:linear-gradient(135deg,var(--vl),#f5f3ff);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--v);font-weight:500;line-height:1.4}
+.cg-item em{display:block;font-size:20px;margin-bottom:4px;font-style:normal}
+
+/* TIMER */
+.tmr-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.tmr-circ{position:relative;width:88px;height:88px;flex-shrink:0}
+.tmr-svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:var(--vl);stroke-width:6}
+.t-pr{fill:none;stroke:url(#tg);stroke-width:6;stroke-linecap:round;stroke-dasharray:239;stroke-dashoffset:239;transition:stroke-dashoffset 1s linear}
+.tmr-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--v)}
+.tmr-info h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.tmr-info p{font-size:12px;color:var(--gr);margin-bottom:10px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:9px 18px;border-radius:50px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.btn-v{background:linear-gradient(135deg,var(--v),var(--p));color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.3)}
+.btn-v:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(124,58,237,.4)}
+.btn-s{background:var(--vl);color:var(--v)}
+.btn-g{background:#f3f4f6;color:#374151}
+
+/* SESSIONS */
+.sess-row{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.sess-dot{width:38px;height:38px;border-radius:50%;border:2.5px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;background:#f9fafb}
+.sess-dot.ok{background:linear-gradient(135deg,var(--v),var(--p));border-color:transparent;box-shadow:0 3px 10px rgba(124,58,237,.3)}
+.sess-lbl{font-size:13px;color:var(--gr)}
+
+/* TABS */
+.ex-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+.ex-tabs::-webkit-scrollbar{display:none}
+.ex-tab{padding:8px 16px;border-radius:50px;border:2px solid #e5e7eb;background:#f9fafb;color:var(--gr);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s}
+.ex-tab.on{background:var(--v);border-color:var(--v);color:#fff;box-shadow:0 3px 10px rgba(124,58,237,.25)}
+
+/* LEVELS */
+.lvl-row{display:flex;gap:8px;margin-bottom:14px}
+.lvl-btn{flex:1;padding:10px 6px;border-radius:12px;border:2.5px solid #e5e7eb;background:#fff;font-size:12px;font-weight:800;color:var(--gr);cursor:pointer;transition:all .18s;text-align:center}
+.lvl-btn.on{border-color:var(--v);background:var(--vl);color:var(--v)}
+
+/* INSTRUCTIONS */
+.inst-box{background:linear-gradient(135deg,#f5f3ff,#fce7f3);border-radius:16px;padding:16px;margin-bottom:16px}
+.inst-title{font-size:12px;font-weight:800;color:var(--v);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.inst-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:14px;line-height:1.5}
+.inst-step:last-child{margin-bottom:0}
+.sn{width:22px;height:22px;border-radius:50%;background:var(--v);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+/* CIRCLE VARIANT TABS */
+.cv-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.cv-tab{padding:6px 14px;border-radius:50px;border:2px solid #e5e7eb;background:#f9fafb;color:var(--gr);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s}
+.cv-tab.on{background:var(--p);border-color:var(--p);color:#fff}
+
+/* EXERCISE AREA */
+.ex-area{display:flex;flex-direction:column;align-items:center;gap:12px;padding:10px 0}
+.sz-row{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--gr);width:100%;max-width:420px}
+.sz-row input{flex:1;accent-color:var(--v)}
+.circles-wrap{width:100%;overflow-x:auto;display:flex;justify-content:center;padding:8px 0}
+.hint{font-size:12px;color:var(--gr);text-align:center;max-width:400px;line-height:1.5}
+
+/* STEREOGRAMS */
+.stereo-shapes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}
+.shape-btn{padding:8px 14px;border-radius:50px;border:2px solid #e5e7eb;background:#f9fafb;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s}
+.shape-btn.on{background:linear-gradient(135deg,var(--v),var(--p));color:#fff;border-color:transparent}
+.stereo-canvas{border-radius:14px;width:100%;max-width:500px;display:block;margin:0 auto;cursor:crosshair;image-rendering:pixelated}
+.stereo-tip{background:var(--vl);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--v);width:100%;max-width:500px;line-height:1.5;margin-top:12px}
+
+/* PDF EXERCISES */
+.pdf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.pdf-item{background:#f3f4f6;border-radius:14px;padding:12px 6px;font-size:12px;font-weight:600;color:#374151;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.pdf-item em{font-size:28px;font-style:normal}
+
+/* CELEBRATION */
+.celeb{display:none;position:fixed;inset:0;background:linear-gradient(135deg,rgba(76,29,149,.97),rgba(124,58,237,.97));z-index:200;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.celeb.show{display:flex;animation:ci .4s ease}
+@keyframes ci{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.celeb h2{font-size:36px;font-weight:900;color:#fff;margin:12px 0}
+.celeb p{font-size:16px;color:rgba(255,255,255,.9);margin-bottom:24px;line-height:1.7}
+.bounce{animation:bn .6s ease-in-out infinite alternate;display:inline-block;font-size:64px}
+@keyframes bn{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.15) rotate(5deg)}}
+
+@media(max-width:480px){
+  .cg-grid{grid-template-columns:1fr}
+  .pdf-grid{grid-template-columns:1fr 1fr}
+  .hdr h1{font-size:22px}
+  .tmr-row{justify-content:center}
+  .tmr-info{text-align:center}
+  .btns{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-stars" id="stars"></div>
+  <h1>👁️ Mes exercices pour les yeux</h1>
+  <p>Bonjour Assiya ! Tu es une super championne 🏆</p>
+  <span class="hdr-badge">Rééducation orthoptique — Entretien</span>
+</header>
+
+<div class="wrap">
+
+  <div class="glasses-warn">
+    <span style="font-size:26px">👓</span>
+    <span>N'oublie pas de mettre <strong>tes lunettes</strong> avant de commencer !</span>
+  </div>
+
+  <!-- CONSIGNES -->
+  <div class="card">
+    <div class="card-hd">📋 Consignes de Mme ANBRI</div>
+    <div class="cg-grid">
+      <div class="cg-item"><em>⏱️</em>5 min · 2 à 3 fois par semaine</div>
+      <div class="cg-item"><em>🔵</em>Commencer en <strong>convergence</strong></div>
+      <div class="cg-item"><em>⭕</em>Finir en <strong>divergence</strong></div>
+      <div class="cg-item"><em>⭐</em>Niveau 1 → 2 → 3 quand tu réussis</div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="card">
+    <div class="card-hd">⏱️ Ma séance du jour</div>
+    <div class="tmr-row">
+      <div class="tmr-circ">
+        <svg class="tmr-svg" width="88" height="88" viewBox="0 0 88 88">
+          <defs>
+            <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <circle class="t-bg" cx="44" cy="44" r="38"/>
+          <circle class="t-pr" id="tpr" cx="44" cy="44" r="38"/>
+        </svg>
+        <div class="tmr-num" id="tnum">5:00</div>
+      </div>
+      <div class="tmr-info">
+        <h3>Minuteur — 5 minutes</h3>
+        <p id="tstat">Prête à commencer ? 💪</p>
+        <div class="btns">
+          <button class="btn btn-v" id="tbtn" onclick="toggleTimer()">▶ Démarrer</button>
+          <button class="btn btn-s" onclick="resetTimer()" title="Réinitialiser">↺</button>
+        </div>
+      </div>
+    </div>
+    <div class="sess-row" id="sessRow"></div>
+  </div>
+
+  <!-- EXERCICES -->
+  <div class="card">
+    <div class="card-hd">🏋️ Mes exercices</div>
+
+    <div class="ex-tabs">
+      <button class="ex-tab on" onclick="showEx('conv',this)">🔵 Convergence</button>
+      <button class="ex-tab" onclick="showEx('div',this)">⭕ Divergence</button>
+      <button class="ex-tab" onclick="showEx('stereo',this)">🌈 Stéréogrammes</button>
+    </div>
+
+    <!-- ── CONVERGENCE ── -->
+    <div id="ex-conv">
+      <div class="lvl-row">
+        <button class="lvl-btn on" onclick="setLvl(1,this)">⭐ Niveau 1</button>
+        <button class="lvl-btn" onclick="setLvl(2,this)">⭐⭐ Niveau 2</button>
+        <button class="lvl-btn" onclick="setLvl(3,this)">⭐⭐⭐ Niveau 3</button>
+      </div>
+      <div class="inst-box" id="conv-inst"></div>
+      <div class="cv-tabs">
+        <button class="cv-tab on" onclick="showCircle('simple',this)">Ronds simples</button>
+        <button class="cv-tab" onclick="showCircle('assiya',this)">Lettres ASSIYA</button>
+        <button class="cv-tab" onclick="showCircle('animaux',this)">Animaux</button>
+      </div>
+      <div class="ex-area">
+        <div class="sz-row">
+          <span>🔎 Taille</span>
+          <input type="range" min="60" max="160" value="100" id="sz1" oninput="resizeCircles(this.value,'svg-c1')">
+          <span id="sz1-lbl">100%</span>
+        </div>
+        <div class="circles-wrap"><div id="svg-c1"></div></div>
+        <p class="hint">💡 Place-toi à <strong>50 cm</strong> de l'écran · Ajuste la taille si besoin</p>
+      </div>
+    </div>
+
+    <!-- ── DIVERGENCE ── -->
+    <div id="ex-div" style="display:none">
+      <div class="inst-box">
+        <div class="inst-title">⭕ Divergence — Instructions</div>
+        <div class="inst-step"><div class="sn">1</div><div>Place l'écran à <strong>30–35 cm</strong> de tes yeux.</div></div>
+        <div class="inst-step"><div class="sn">2</div><div>Choisis un point au <strong>loin</strong> (interrupteur, tableau...) juste au-dessus des ronds.</div></div>
+        <div class="inst-step"><div class="sn">3</div><div>Fixe ce point au loin. Laisse ton regard "traverser" l'écran.</div></div>
+        <div class="inst-step"><div class="sn">4</div><div>Tu vois apparaître <strong>3 ronds</strong>. Essaie de les maintenir !</div></div>
+        <div class="inst-step"><div class="sn">5</div><div>Cache ton point de fixation et <strong>garde les 3 ronds</strong> visibles.</div></div>
+      </div>
+      <div class="ex-area">
+        <div class="sz-row">
+          <span>🔎 Taille</span>
+          <input type="range" min="60" max="160" value="100" id="sz2" oninput="resizeCircles(this.value,'svg-c2')">
+          <span id="sz2-lbl">100%</span>
+        </div>
+        <div class="circles-wrap"><div id="svg-c2"></div></div>
+        <p class="hint">💡 Pour la divergence, ton regard passe <em>à travers</em> l'écran, pas sur les ronds.</p>
+      </div>
+    </div>
+
+    <!-- ── STÉRÉOGRAMMES ── -->
+    <div id="ex-stereo" style="display:none">
+      <div class="inst-box">
+        <div class="inst-title">🌈 Stéréogrammes — Comment voir l'image cachée ?</div>
+        <div class="inst-step"><div class="sn">1</div><div>Fixe les <strong>2 points rouges</strong> en haut du stéréogramme.</div></div>
+        <div class="inst-step"><div class="sn">2</div><div>Approche ton nez de l'écran, puis recule <strong>très lentement</strong>.</div></div>
+        <div class="inst-step"><div class="sn">3</div><div>Laisse ton regard se <strong>détendre</strong> comme si tu regardais au loin.</div></div>
+        <div class="inst-step"><div class="sn">4</div><div>Une <strong>image en relief</strong> apparaît dans le motif ! Maintiens-la.</div></div>
+      </div>
+
+      <div class="stereo-shapes">
+        <button class="shape-btn on" onclick="drawStereo('coeur',this)">❤️ Cœur</button>
+        <button class="shape-btn" onclick="drawStereo('etoile',this)">⭐ Étoile</button>
+        <button class="shape-btn" onclick="drawStereo('dauphin',this)">🐬 Dauphin</button>
+        <button class="shape-btn" onclick="drawStereo('saturne',this)">🪐 Saturne</button>
+      </div>
+
+      <canvas id="stereoCanvas" class="stereo-canvas" width="500" height="300"></canvas>
+
+      <div style="display:flex;justify-content:center;margin-top:12px">
+        <button class="btn btn-v" onclick="drawStereo(currentShape,null)">🔄 Nouveau stéréogramme</button>
+      </div>
+
+      <div class="stereo-tip">
+        💡 <strong>Astuce :</strong> Regarde les 2 points rouges jusqu'à en voir 3. Quand tu vois 3 points, maintiens et laisse descendre ton regard sur l'image — la forme en 3D apparaît !
+      </div>
+
+      <div style="margin-top:20px">
+        <div class="card-hd">📄 Exercices sur feuilles (à imprimer)</div>
+        <div class="pdf-grid">
+          <div class="pdf-item"><em>🤡</em>Le Clown</div>
+          <div class="pdf-item"><em>🐘</em>L'Éléphant</div>
+          <div class="pdf-item"><em>🐱</em>Le Chat</div>
+          <div class="pdf-item"><em>⬛</em>Les Carrés</div>
+        </div>
+        <p style="font-size:12px;color:var(--gr);text-align:center;margin-top:10px">Ces exercices sont sur les feuilles que t'a données Mme ANBRI.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CELEBRATION -->
+<div class="celeb" id="celeb">
+  <span class="bounce">🎉</span>
+  <h2>Bravo Assiya !</h2>
+  <p>Tu as terminé ta séance de 5 minutes !<br>Tu es une vraie championne de la vision 👁️✨<br>Tes yeux te disent merci !</p>
+  <button class="btn btn-v" style="font-size:15px;padding:14px 30px" onclick="closeceleb()">Fermer 🎊</button>
+</div>
+
+<script>
+// ── STARS ──
+(function(){
+  var c=document.getElementById('stars');
+  [{t:'8%',l:'8%',s:12,d:0},{t:'15%',l:'75%',s:16,d:.5},{t:'55%',l:'12%',s:10,d:1},
+   {t:'35%',l:'88%',s:14,d:1.5},{t:'75%',l:'45%',s:11,d:.7},{t:'25%',l:'55%',s:8,d:1.2},
+   {t:'65%',l:'70%',s:13,d:.3},{t:'45%',l:'30%',s:9,d:.9}].forEach(function(p){
+    var el=document.createElement('span');
+    el.className='st'; el.textContent='✦';
+    el.style.cssText='top:'+p.t+';left:'+p.l+';font-size:'+p.s+'px;animation-delay:'+p.d+'s';
+    c.appendChild(el);
+  });
+})();
+
+// ── TIMER ──
+var tLeft=300,tTotal=300,tRunning=false,tInt=null;
+
+function toggleTimer(){
+  if(tRunning){
+    clearInterval(tInt); tRunning=false;
+    document.getElementById('tbtn').textContent='▶ Reprendre';
+    document.getElementById('tstat').textContent='⏸ En pause...';
+  } else {
+    tRunning=true;
+    document.getElementById('tbtn').textContent='⏸ Pause';
+    document.getElementById('tstat').textContent='💪 Courage Assiya !';
+    tInt=setInterval(function(){
+      tLeft--; updTimer();
+      if(tLeft<=0){ clearInterval(tInt); tRunning=false; finishSess(); }
+    },1000);
+  }
+}
+
+function resetTimer(){
+  clearInterval(tInt); tRunning=false; tLeft=tTotal; updTimer();
+  document.getElementById('tbtn').textContent='▶ Démarrer';
+  document.getElementById('tstat').textContent='Prête à commencer ? 💪';
+}
+
+function updTimer(){
+  var m=Math.floor(tLeft/60), s=tLeft%60;
+  document.getElementById('tnum').textContent=m+':'+(s<10?'0':'')+s;
+  var pct=(tTotal-tLeft)/tTotal;
+  document.getElementById('tpr').style.strokeDashoffset=239*(1-pct);
+}
+
+function finishSess(){
+  var today=new Date().toDateString();
+  var sess=JSON.parse(localStorage.getItem('assiya-sess')||'[]');
+  if(sess.indexOf(today)===-1){ sess.push(today); localStorage.setItem('assiya-sess',JSON.stringify(sess)); }
+  updSess(); showCeleb();
+  document.getElementById('tbtn').textContent='▶ Démarrer';
+  document.getElementById('tstat').textContent='Séance terminée ! 🎉';
+  tLeft=tTotal; updTimer();
+}
+
+// ── SESSIONS ──
+function updSess(){
+  var sess=JSON.parse(localStorage.getItem('assiya-sess')||'[]');
+  var now=new Date(), mon=new Date(now);
+  mon.setDate(now.getDate()-((now.getDay()+6)%7)); mon.setHours(0,0,0,0);
+  var done=0;
+  sess.forEach(function(s){ if(new Date(s)>=mon) done++; });
+  done=Math.min(done,3);
+  var row=document.getElementById('sessRow'); row.innerHTML='';
+  for(var i=0;i<3;i++){
+    var d=document.createElement('div');
+    d.className='sess-dot'+(i<done?' ok':'');
+    d.textContent=i<done?'⭐':'';
+    row.appendChild(d);
+  }
+  var lbl=document.createElement('span'); lbl.className='sess-lbl';
+  lbl.textContent=done+'/3 séance'+(done>1?'s':'')+' cette semaine';
+  row.appendChild(lbl);
+}
+
+// ── CELEBRATION ──
+function showCeleb(){ document.getElementById('celeb').classList.add('show'); }
+function closeceleb(){ document.getElementById('celeb').classList.remove('show'); }
+
+// ── EXERCISE NAVIGATION ──
+function showEx(name, btn){
+  ['conv','div','stereo'].forEach(function(n){
+    document.getElementById('ex-'+n).style.display=n===name?'block':'none';
+  });
+  document.querySelectorAll('.ex-tab').forEach(function(t){ t.classList.remove('on'); });
+  btn.classList.add('on');
+  if(name==='div') renderCircles(currentSize,'svg-c2');
+  if(name==='stereo') drawStereo(currentShape,null);
+}
+
+// ── LEVELS ──
+var currentLvl=1;
+var lvlInst={
+  1:[
+    {n:1,t:'Tiens l\'écran à environ <strong>50 cm</strong> de tes yeux.'},
+    {n:2,t:'Pose ton doigt sur les ronds. Rapproche-le <strong>lentement</strong> de tes yeux.'},
+    {n:3,t:'Quand tu vois <strong>3 ronds</strong> derrière ton doigt : stop, ne bouge plus !'}
+  ],
+  2:[
+    {n:1,t:'Tiens l\'écran à environ <strong>50 cm</strong> de tes yeux.'},
+    {n:2,t:'Rapproche ton doigt jusqu\'à voir <strong>3 ronds</strong>.'},
+    {n:3,t:'Essaie de voir le rond du milieu <strong>net</strong> et en <strong>relief 3D</strong> !'}
+  ],
+  3:[
+    {n:1,t:'Tiens l\'écran à environ <strong>50 cm</strong> de tes yeux.'},
+    {n:2,t:'Rapproche ton doigt jusqu\'à voir <strong>3 ronds nets et en 3D</strong>.'},
+    {n:3,t:'<strong>Bouge doucement la tête</strong> (gauche/droite/haut/bas) en maintenant les 3 ronds !'}
+  ]
+};
+
+function setLvl(l,btn){
+  currentLvl=l;
+  document.querySelectorAll('.lvl-btn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on'); updInst();
+}
+
+function updInst(){
+  var stars='⭐'.repeat(currentLvl);
+  var html='<div class="inst-title">'+stars+' Niveau '+currentLvl+'</div>';
+  lvlInst[currentLvl].forEach(function(s){
+    html+='<div class="inst-step"><div class="sn">'+s.n+'</div><div>'+s.t+'</div></div>';
+  });
+  document.getElementById('conv-inst').innerHTML=html;
+}
+
+// ── CIRCLES ──
+var currentCircleType='simple';
+var currentSize=100;
+
+function circSVG(type,r,cx,cy){
+  var fs=r*0.14, fsm=r*0.12;
+  if(type==='simple'){
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="white" stroke="#1e1b4b" stroke-width="'+(r*0.045)+'"/>'
+          +'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.55)+'" fill="white" stroke="#1e1b4b" stroke-width="'+(r*0.04)+'"/>'
+          +'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.09)+'" fill="#1e1b4b"/>';
+  }
+  if(type==='assiya'){
+    var sp=r*0.19;
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="white" stroke="#1e1b4b" stroke-width="'+(r*0.04)+'"/>'
+          +'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.55)+'" fill="none" stroke="#1e1b4b" stroke-width="'+(r*0.025)+'"/>'
+          // Vertical: A S S I Y A
+          +'<text x="'+cx+'" y="'+(cy-sp*2.4)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">A</text>'
+          +'<text x="'+cx+'" y="'+(cy-sp*1.2)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">S</text>'
+          // Horizontal: A S [S] I Y A (S at center)
+          +'<text x="'+(cx-sp*2.4)+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">A</text>'
+          +'<text x="'+(cx-sp*1.2)+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">S</text>'
+          +'<text x="'+cx+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(fs*1.15)+'" font-weight="800" font-family="Courier New,monospace" fill="'+css_v+'">S</text>'
+          +'<text x="'+(cx+sp*1.2)+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">I</text>'
+          +'<text x="'+(cx+sp*2.4)+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">Y</text>'
+          // Vertical bottom: I Y A
+          +'<text x="'+cx+'" y="'+(cy+sp*1.2)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">I</text>'
+          +'<text x="'+cx+'" y="'+(cy+sp*2.4)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">Y</text>'
+          +'<text x="'+cx+'" y="'+(cy+sp*3.6)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fs+'" font-weight="800" font-family="Courier New,monospace">A</text>';
+  }
+  if(type==='animaux'){
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="white" stroke="#1e1b4b" stroke-width="'+(r*0.045)+'"/>'
+          +'<text x="'+(cx-r*0.3)+'" y="'+(cy-r*0.35)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fsm+'" font-weight="700" font-family="Courier New,monospace">CHEVRE</text>'
+          +'<text x="'+(cx+r*0.3)+'" y="'+(cy-r*0.35)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fsm+'" font-weight="700" font-family="Courier New,monospace">COCHON</text>'
+          +'<text x="'+cx+'" y="'+cy+'" text-anchor="middle" dominant-baseline="middle" font-size="'+(fsm*1.1)+'" font-weight="800" font-family="Courier New,monospace">BALEINE</text>'
+          +'<text x="'+(cx-r*0.3)+'" y="'+(cy+r*0.35)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fsm+'" font-weight="700" font-family="Courier New,monospace">MOUTON</text>'
+          +'<text x="'+(cx+r*0.3)+'" y="'+(cy+r*0.35)+'" text-anchor="middle" dominant-baseline="middle" font-size="'+fsm+'" font-weight="700" font-family="Courier New,monospace">CHEVAL</text>';
+  }
+  return '';
+}
+
+var css_v='#7c3aed';
+
+function renderCircles(size, id){
+  var r=size, gap=r*1.3;
+  var W=r*2+gap+r*2+r*0.4, H=r*2+r*0.6;
+  var cy=H/2, cx1=r*1.2, cx2=cx1+r*2+gap;
+  var inner='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'
+    +circSVG(currentCircleType,r,cx1,cy)
+    +circSVG(currentCircleType,r,cx2,cy)
+    +'</svg>';
+  document.getElementById(id).innerHTML=inner;
+}
+
+function showCircle(type,btn){
+  currentCircleType=type;
+  document.querySelectorAll('.cv-tab').forEach(function(t){ t.classList.remove('on'); });
+  btn.classList.add('on');
+  renderCircles(currentSize,'svg-c1');
+}
+
+function resizeCircles(val,id){
+  currentSize=parseInt(val);
+  var lbl=id==='svg-c1'?'sz1-lbl':'sz2-lbl';
+  document.getElementById(lbl).textContent=val+'%';
+  renderCircles(currentSize,id);
+}
+
+// ── SIRDS GENERATOR ──
+var currentShape='coeur';
+
+var shapeFuncs={
+  coeur:function(x,y,W,H){
+    var nx=(x/W-0.5)*2.2, ny=(y/H-0.45)*2.2;
+    return Math.pow(nx*nx+ny*ny-1,3)-nx*nx*ny*ny*ny<0?0.6:0;
+  },
+  etoile:function(x,y,W,H){
+    var nx=x/W-0.5, ny=y/H-0.5;
+    var dist=Math.sqrt(nx*nx+ny*ny);
+    var angle=Math.atan2(ny,nx);
+    return dist<(0.18+0.1*Math.cos(5*angle))?0.6:0;
+  },
+  dauphin:function(x,y,W,H){
+    var nx=x/W, ny=y/H;
+    var bx=(nx-0.4)/0.28, by=(ny-0.5)/0.18;
+    if(bx*bx+by*by<1) return 0.6;
+    // dorsal fin
+    if(nx>0.2&&nx<0.38&&ny<0.5+(0.38-nx)*1.2&&ny>0.5-(0.38-nx)*0.8-0.12) return 0.5;
+    // tail
+    if(nx>0.65&&nx<0.78){
+      if(ny<0.5-(nx-0.65)*1.2||ny>0.5+(nx-0.65)*1.2) return 0.6;
+    }
+    return 0;
+  },
+  saturne:function(x,y,W,H){
+    var nx=x/W-0.5, ny=(y/H-0.5)*1.6;
+    var dist=Math.sqrt(nx*nx+ny*ny);
+    if(dist<0.17) return 0.7;
+    var ring=Math.abs(Math.sqrt(nx*nx*1.8+ny*ny*9)-0.27);
+    if(ring<0.025) return 0.5;
+    return 0;
+  }
+};
+
+function drawStereo(shape,btn){
+  currentShape=shape;
+  if(btn){
+    document.querySelectorAll('.shape-btn').forEach(function(b){ b.classList.remove('on'); });
+    btn.classList.add('on');
+  }
+  var canvas=document.getElementById('stereoCanvas');
+  var W=canvas.width, H=canvas.height;
+  var ctx=canvas.getContext('2d');
+  var imgData=ctx.createImageData(W,H);
+  var data=imgData.data;
+  var period=85, depthAmt=9;
+  var sfn=shapeFuncs[shape];
+
+  for(var y=0;y<H;y++){
+    var row=new Uint8Array(W*3);
+    for(var x=0;x<period&&x<W;x++){
+      row[x*3]=Math.random()*256|0;
+      row[x*3+1]=Math.random()*256|0;
+      row[x*3+2]=Math.random()*256|0;
+    }
+    for(var x=period;x<W;x++){
+      var depth=sfn(x,y,W,H);
+      var shift=Math.round(depth*depthAmt);
+      var src=x-period+shift;
+      row[x*3]=src>=0?row[src*3]:row[(x%period)*3];
+      row[x*3+1]=src>=0?row[src*3+1]:row[(x%period)*3+1];
+      row[x*3+2]=src>=0?row[src*3+2]:row[(x%period)*3+2];
+    }
+    for(var x=0;x<W;x++){
+      var i=(y*W+x)*4;
+      data[i]=row[x*3]; data[i+1]=row[x*3+1]; data[i+2]=row[x*3+2]; data[i+3]=255;
+    }
+  }
+  ctx.putImageData(imgData,0,0);
+
+  // Red alignment dots
+  ctx.fillStyle='#ff2222';
+  var mid=Math.floor(W/2);
+  ctx.beginPath(); ctx.arc(mid-period/2,14,8,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(mid+period/2,14,8,0,Math.PI*2); ctx.fill();
+}
+
+// ── INIT ──
+updSess();
+updInst();
+renderCircles(currentSize,'svg-c1');
+renderCircles(currentSize,'svg-c2');
+</script>
+</body>
+</html>
