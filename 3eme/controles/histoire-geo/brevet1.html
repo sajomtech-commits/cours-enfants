@@ -1,0 +1,686 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brevet 2026 – Révisions Histoire-Géographie-EMC</title>
+<style>
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --text:#102033;
+  --muted:#5b6b7c;
+  --primary:#123456;
+  --secondary:#1f4f82;
+  --success:#198754;
+  --danger:#d62839;
+  --border:#dce3eb;
+  --shadow:0 10px 25px rgba(0,0,0,.08);
+}
+body.dark{
+  --bg:#0f1722;
+  --card:#172233;
+  --text:#f4f7fb;
+  --muted:#b3c0ce;
+  --primary:#7db3ff;
+  --secondary:#4f8dd6;
+  --border:#2b3d55;
+  --shadow:0 10px 25px rgba(0,0,0,.3);
+}
+body.dys{
+  font-family:"OpenDyslexic", Arial, sans-serif;
+  letter-spacing:.06em;
+  line-height:1.8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:.3s ease;
+  font-size:16px;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  padding:1rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:var(--shadow);
+}
+.logo{
+  font-size:1.4rem;
+  font-weight:700;
+  color:var(--primary);
+}
+.controls{
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+}
+button{
+  border:none;
+  border-radius:12px;
+  padding:.75rem 1rem;
+  cursor:pointer;
+  background:var(--primary);
+  color:white;
+  font-weight:600;
+  transition:.2s;
+}
+button:hover, button:focus{
+  transform:translateY(-2px);
+  opacity:.95;
+}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  padding:1rem;
+  justify-content:center;
+}
+.nav-btn.active{background:var(--success)}
+main{padding:1rem;max-width:1200px;margin:auto}
+.tab{display:none}
+.tab.active{display:block}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:1.25rem;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+}
+.progress{
+  width:100%;
+  height:18px;
+  background:#cfd9e5;
+  border-radius:999px;
+  overflow:hidden;
+  margin:1rem 0;
+}
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--primary),var(--success));
+  transition:.3s;
+}
+.answer-btn{
+  width:100%;
+  text-align:left;
+  margin:.4rem 0;
+  background:var(--secondary);
+}
+.feedback{
+  margin-top:1rem;
+  padding:1rem;
+  border-radius:12px;
+  display:none;
+}
+.correct{background:rgba(25,135,84,.15);color:var(--success)}
+.incorrect{background:rgba(214,40,57,.15);color:var(--danger)}
+textarea{
+  width:100%;
+  min-height:180px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  padding:1rem;
+  font-size:1rem;
+  background:var(--bg);
+  color:var(--text);
+}
+.topic-btn{
+  width:100%;
+  margin-bottom:.5rem;
+}
+.hidden{display:none}
+ul li{margin-bottom:.5rem}
+.badge{
+  display:inline-block;
+  padding:.35rem .75rem;
+  border-radius:999px;
+  background:rgba(18,52,86,.1);
+  color:var(--primary);
+  margin:.2rem;
+  font-size:.9rem;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1rem;
+}
+.stat-box{
+  background:var(--card);
+  border-radius:16px;
+  padding:1rem;
+  border:1px solid var(--border);
+}
+svg{width:100%;height:260px;background:var(--card);border-radius:16px}
+footer{text-align:center;padding:2rem;color:var(--muted)}
+@media(max-width:700px){
+  header{flex-direction:column;gap:1rem;text-align:center}
+  nav{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">🎓 Brevet 2026 – Histoire • Géographie • EMC</div>
+    <div id="date"></div>
+  </div>
+  <div class="controls">
+    <button id="darkToggle" aria-label="Activer le mode sombre">🌙 Mode sombre</button>
+    <button id="dysToggle" aria-label="Activer le mode dyslexique">🅳 DYS</button>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-tab="home">🏠 Accueil</button>
+  <button class="nav-btn" data-tab="qcm">📚 QCM</button>
+  <button class="nav-btn" data-tab="developpement">✍️ Développement</button>
+  <button class="nav-btn" data-tab="documents">📄 Documents</button>
+  <button class="nav-btn" data-tab="scores">📈 Mes scores</button>
+</nav>
+
+<main>
+<section id="home" class="tab active">
+  <div class="card">
+    <h1>Réussir le Brevet 2026</h1>
+    <p>Cette plateforme couvre l'ensemble du programme officiel d'Histoire-Géographie-EMC du DNB 2026.</p>
+    <div class="grid">
+      <article class="card">
+        <h2>📚 QCM interactif</h2>
+        <p>15 questions aléatoires avec correction immédiate et score final.</p>
+      </article>
+      <article class="card">
+        <h2>✍️ Développement construit</h2>
+        <p>Plans détaillés, introductions modèles, mots-clés et espace d'entraînement.</p>
+      </article>
+      <article class="card">
+        <h2>📄 Études de documents</h2>
+        <p>Analyse guidée comme au Brevet avec corrigés progressifs.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="qcm" class="tab">
+  <div class="card">
+    <h2>📚 QCM Brevet 2026</h2>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    <p id="questionCounter">Question 1/15</p>
+    <h3 id="questionText"></h3>
+    <div id="answers"></div>
+    <div id="feedback" class="feedback"></div>
+    <div id="result" class="hidden"></div>
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <button id="restartBtn">🔄 Recommencer</button>
+      <button id="detailsBtn">📊 Voir le détail</button>
+    </div>
+    <div id="details" class="hidden"></div>
+  </div>
+</section>
+
+<section id="developpement" class="tab">
+  <div class="grid" id="topics"></div>
+  <div id="topicContent"></div>
+</section>
+
+<section id="documents" class="tab">
+  <div id="documentStudies"></div>
+</section>
+
+<section id="scores" class="tab">
+  <div class="stats">
+    <div class="stat-box"><h3>🏆 Meilleur score</h3><p id="bestScore">0/15</p></div>
+    <div class="stat-box"><h3>📊 Score moyen</h3><p id="avgScore">0</p></div>
+    <div class="stat-box"><h3>📝 Sessions</h3><p id="sessionCount">0</p></div>
+  </div>
+  <div class="card">
+    <h2>Historique des 10 dernières sessions</h2>
+    <svg id="chart" viewBox="0 0 600 260" aria-label="Graphique des scores"></svg>
+    <button id="resetScores">🗑️ Réinitialiser tous mes scores</button>
+  </div>
+</section>
+</main>
+
+<footer>
+  Plateforme hors ligne compatible Chrome, Firefox, Safari et Edge.
+</footer>
+
+<script>
+// Affichage de la date du jour
+const date = new Date();
+document.getElementById('date').textContent = date.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// Navigation par onglets
+const tabs = document.querySelectorAll('.tab');
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    tabs.forEach(tab=>tab.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// Mode sombre
+const darkToggle = document.getElementById('darkToggle');
+darkToggle.onclick = ()=> document.body.classList.toggle('dark');
+
+// Mode DYS
+const dysToggle = document.getElementById('dysToggle');
+dysToggle.onclick = ()=> document.body.classList.toggle('dys');
+
+// Banque de questions QCM
+const questions = [
+{cat:'Histoire',q:'Quel événement déclenche la Première Guerre mondiale ?',a:['L’assassinat de François-Ferdinand','La crise de Cuba','L’invasion de la Pologne','Le traité de Versailles'],c:0,e:'L’assassinat de l’archiduc François-Ferdinand à Sarajevo en juin 1914 provoque l’engrenage des alliances.'},
+{cat:'Histoire',q:'Quelle bataille symbolise la violence de masse pendant la Première Guerre mondiale ?',a:['Verdun','Waterloo','Austerlitz','Stalingrad'],c:0,e:'La bataille de Verdun en 1916 fait plus de 300 000 morts.'},
+{cat:'Histoire',q:'En quelle année a lieu le krach de Wall Street ?',a:['1918','1929','1939','1945'],c:1,e:'Le krach boursier du 24 octobre 1929 provoque une crise mondiale.'},
+{cat:'Histoire',q:'Quel régime est dirigé par Hitler ?',a:['Le fascisme','Le communisme','Le nazisme','La monarchie'],c:2,e:'Hitler dirige l’Allemagne nazie à partir de 1933.'},
+{cat:'Histoire',q:'Quel camp libère Paris en août 1944 ?',a:['Les troupes soviétiques','Les forces alliées et la Résistance','L’armée italienne','Le Japon'],c:1,e:'La Résistance et les Alliés participent à la Libération de Paris.'},
+{cat:'Histoire',q:'Quel génocide est perpétré pendant la Seconde Guerre mondiale ?',a:['Arméniens','Tutsis','Juifs et Tsiganes','Cambodgiens'],c:2,e:'Les Juifs et les Tsiganes sont victimes d’un génocide organisé par les nazis.'},
+{cat:'Histoire',q:'Qui dirige la France libre depuis Londres ?',a:['Pétain','Churchill','Jean Moulin','De Gaulle'],c:3,e:'Le général de Gaulle lance l’appel du 18 juin 1940.'},
+{cat:'Histoire',q:'Quel mur symbolise la guerre froide ?',a:['Mur d’Hadrien','Mur de Berlin','Mur des Lamentations','Grande Muraille'],c:1,e:'Le mur de Berlin sépare la ville de 1961 à 1989.'},
+{cat:'Histoire',q:'Quelle crise oppose les États-Unis et l’URSS en 1962 ?',a:['Suez','Berlin','Cuba','Corée'],c:2,e:'La crise de Cuba fait craindre une guerre nucléaire.'},
+{cat:'Histoire',q:'Quel pays obtient son indépendance en 1962 après une guerre contre la France ?',a:['Inde','Algérie','Vietnam','Sénégal'],c:1,e:'Les accords d’Évian mettent fin à la guerre d’Algérie.'},
+{cat:'Histoire',q:'Quel traité fonde la CEE en 1957 ?',a:['Versailles','Rome','Maastricht','Schengen'],c:1,e:'Le traité de Rome crée la Communauté économique européenne.'},
+{cat:'Histoire',q:'Quel événement marque la fin de la guerre froide ?',a:['Le traité de Rome','Le débarquement','La chute du mur de Berlin','Pearl Harbor'],c:2,e:'La chute du mur de Berlin en 1989 symbolise la fin du monde bipolaire.'},
+{cat:'Histoire',q:'Quelle institution est créée en 1945 pour protéger les Français ?',a:['ONU','Sécurité sociale','OTAN','UNESCO'],c:1,e:'La Sécurité sociale est créée sous le GPRF.'},
+{cat:'Histoire',q:'Quel président américain lance le plan Marshall ?',a:['Kennedy','Roosevelt','Truman','Nixon'],c:2,e:'Le plan Marshall aide à reconstruire l’Europe après 1945.'},
+{cat:'Histoire',q:'Quel dirigeant soviétique lance la perestroïka ?',a:['Staline','Lénine','Gorbatchev','Khrouchtchev'],c:2,e:'Gorbatchev réforme l’URSS dans les années 1980.'},
+{cat:'Histoire',q:'Quel procès juge les criminels nazis après 1945 ?',a:['Procès de Berlin','Procès de Nuremberg','Procès de Versailles','Procès de Moscou'],c:1,e:'Les procès de Nuremberg ont lieu entre 1945 et 1946.'},
+{cat:'Histoire',q:'Quelle organisation militaire regroupe les pays occidentaux pendant la guerre froide ?',a:['ONU','OTAN','CEE','Pacte de Varsovie'],c:1,e:'L’OTAN est créée en 1949.'},
+{cat:'Histoire',q:'Quel événement terroriste marque le début du XXIe siècle ?',a:['11 septembre 2001','Mai 68','Printemps arabe','Krach de 1929'],c:0,e:'Les attentats du 11 septembre frappent les États-Unis.'},
+{cat:'Histoire',q:'Qui était Jean Moulin ?',a:['Un maréchal','Un résistant','Un roi','Un industriel'],c:1,e:'Jean Moulin unifie les mouvements de Résistance.'},
+{cat:'Histoire',q:'Quel pays est divisé entre Nord communiste et Sud capitaliste après 1945 ?',a:['Italie','Corée','Espagne','Portugal'],c:1,e:'La guerre de Corée oppose deux modèles politiques.'},
+
+{cat:'Géographie',q:'Comment appelle-t-on la concentration des populations et des activités dans les grandes villes ?',a:['Mondialisation','Métropolisation','Urbanisation rurale','Désertification'],c:1,e:'La métropolisation renforce le poids des grandes villes.'},
+{cat:'Géographie',q:'Quelle ville française est la plus peuplée ?',a:['Marseille','Lyon','Paris','Lille'],c:2,e:'Paris est la principale métropole française.'},
+{cat:'Géographie',q:'Quel espace productif est lié au tourisme ?',a:['Zone industrialo-portuaire','Station balnéaire','Technopôle','Bassin minier'],c:1,e:'Les stations balnéaires attirent les touristes.'},
+{cat:'Géographie',q:'Quel espace est considéré comme peu peuplé ?',a:['Paris','La diagonale des faibles densités','Lille','Lyon'],c:1,e:'La diagonale des faibles densités traverse le centre de la France.'},
+{cat:'Géographie',q:'Quel territoire français est situé dans les Caraïbes ?',a:['La Réunion','Mayotte','Martinique','Nouvelle-Calédonie'],c:2,e:'La Martinique est un territoire ultramarin des Caraïbes.'},
+{cat:'Géographie',q:'Quel siège accueille les institutions européennes ?',a:['Madrid','Strasbourg','Rome','Athènes'],c:1,e:'Strasbourg accueille notamment le Parlement européen.'},
+{cat:'Géographie',q:'Quel moyen de transport relie rapidement les grandes villes françaises ?',a:['Péniche','TGV','Téléphérique','Tramway'],c:1,e:'Le TGV participe à l’aménagement du territoire.'},
+{cat:'Géographie',q:'Quel espace productif domine dans la Silicon Valley française ?',a:['Agriculture','Tourisme','Haute technologie','Pêche'],c:2,e:'Les technopôles concentrent les activités innovantes.'},
+{cat:'Géographie',q:'Quelle façade maritime française est la plus dynamique ?',a:['Manche','Méditerranée','Façade maritime du Nord','Façade atlantique'],c:3,e:'La façade atlantique bénéficie d’échanges mondiaux.'},
+{cat:'Géographie',q:'Quel est un atout des territoires ultramarins ?',a:['Isolement total','ZEE importante','Absence de biodiversité','Climat polaire'],c:1,e:'Les outre-mer offrent une vaste ZEE à la France.'},
+{cat:'Géographie',q:'Que signifie l’acronyme UE ?',a:['Union européenne','Union économique','Université européenne','Union électorale'],c:0,e:'L’Union européenne regroupe 27 États membres.'},
+{cat:'Géographie',q:'Quel pays n’appartient pas à l’UE ?',a:['France','Allemagne','Norvège','Espagne'],c:2,e:'La Norvège ne fait pas partie de l’Union européenne.'},
+{cat:'Géographie',q:'Quel espace productif est lié à Airbus ?',a:['Agricole','Industriel aéronautique','Touristique','Forestier'],c:1,e:'Airbus est un exemple d’industrie de pointe.'},
+{cat:'Géographie',q:'Quel phénomène touche les centres-villes ?',a:['Périurbanisation','Désertification','Banquise','Décolonisation'],c:0,e:'La périurbanisation étend les villes sur les périphéries.'},
+{cat:'Géographie',q:'Quelle métropole mondiale se situe au Royaume-Uni ?',a:['Berlin','Lisbonne','Londres','Bruxelles'],c:2,e:'Londres est une métropole mondiale majeure.'},
+{cat:'Géographie',q:'Quel territoire ultramarin est situé dans l’océan Indien ?',a:['Guadeloupe','Guyane','La Réunion','Saint-Pierre-et-Miquelon'],c:2,e:'La Réunion se trouve dans l’océan Indien.'},
+{cat:'Géographie',q:'Quel secteur domine dans les stations de ski ?',a:['Industrie','Tourisme','Pêche','Numérique'],c:1,e:'Le tourisme d’hiver est essentiel dans les Alpes.'},
+{cat:'Géographie',q:'Quel organisme finance certains projets régionaux européens ?',a:['ONU','Fonds européens','OTAN','UNESCO'],c:1,e:'Les fonds européens soutiennent l’aménagement du territoire.'},
+{cat:'Géographie',q:'Quel territoire possède le centre spatial de Kourou ?',a:['Martinique','Guyane','Mayotte','Corse'],c:1,e:'Le centre spatial de Kourou se situe en Guyane.'},
+{cat:'Géographie',q:'Quel est un effet de la mondialisation ?',a:['Réduction totale des échanges','Augmentation des flux','Fin des villes','Disparition des ports'],c:1,e:'La mondialisation augmente les flux de marchandises et d’informations.'},
+
+{cat:'EMC',q:'Quel principe garantit la séparation des religions et de l’État ?',a:['Laïcité','Monarchie','Communisme','Fédéralisme'],c:0,e:'La laïcité garantit la neutralité de l’État.'},
+{cat:'EMC',q:'À quel âge vote-t-on en France ?',a:['16 ans','17 ans','18 ans','21 ans'],c:2,e:'Le droit de vote est accordé à 18 ans.'},
+{cat:'EMC',q:'Quelle devise est celle de la République française ?',a:['Travail, Famille, Patrie','Liberté, Égalité, Fraternité','Ordre et Justice','Paix et Liberté'],c:1,e:'La devise républicaine date de la Révolution française.'},
+{cat:'EMC',q:'Quel média peut diffuser de fausses informations ?',a:['Tous','Aucun','Seulement la télévision','Seulement la radio'],c:0,e:'L’esprit critique est essentiel face aux médias.'},
+{cat:'EMC',q:'Quel texte fonde les droits de l’Homme en France ?',a:['Code civil','Déclaration des droits de l’Homme et du citoyen','Traité de Rome','Constitution américaine'],c:1,e:'La DDHC date de 1789.'},
+{cat:'EMC',q:'Qui élit le président de la République ?',a:['Le Parlement uniquement','Les maires','Les citoyens','Les juges'],c:2,e:'Le président est élu au suffrage universel direct.'},
+{cat:'EMC',q:'Quel est le rôle du service civique ?',a:['Service militaire obligatoire','Mission d’intérêt général','Punition judiciaire','Formation privée'],c:1,e:'Le service civique permet un engagement citoyen.'},
+{cat:'EMC',q:'Quelle valeur républicaine combat les discriminations ?',a:['Autorité','Égalité','Nationalisme','Censure'],c:1,e:'L’égalité est un principe fondamental de la République.'},
+{cat:'EMC',q:'Quel droit protège les journalistes ?',a:['Liberté de la presse','Droit divin','Service militaire','Monarchie'],c:0,e:'La liberté de la presse est essentielle en démocratie.'},
+{cat:'EMC',q:'Quel est le rôle du conseil municipal des jeunes ?',a:['Gouverner le pays','Participer à la vie locale','Créer des lois nationales','Diriger l’armée'],c:1,e:'Le CMJ favorise la participation citoyenne.'},
+{cat:'EMC',q:'Quel principe rend la République indivisible ?',a:['Une seule loi pour tous','Des lois différentes','L’absence de Constitution','Le pouvoir militaire'],c:0,e:'Les citoyens sont égaux devant la loi.'},
+{cat:'EMC',q:'Que signifie EMI ?',a:['Éducation aux médias et à l’information','École mondiale informatique','Émission médiatique internationale','Économie moderne industrielle'],c:0,e:'L’EMI développe l’esprit critique.'},
+{cat:'EMC',q:'Quelle institution vote les lois ?',a:['Le Sénat uniquement','Le Parlement','Le président seul','Le maire'],c:1,e:'Le Parlement est composé de l’Assemblée nationale et du Sénat.'},
+{cat:'EMC',q:'Quel est un danger pour la démocratie ?',a:['Le vote','La désinformation','Le débat','Les élections'],c:1,e:'La désinformation peut manipuler l’opinion publique.'},
+{cat:'EMC',q:'Quelle égalité est défendue par la République ?',a:['Femmes-hommes','Entre nobles seulement','Entre régions','Entre entreprises'],c:0,e:'L’égalité femmes-hommes est protégée par la loi.'},
+{cat:'EMC',q:'Quelle institution défend la France ?',a:['ONU','Défense nationale','UNESCO','UEFA'],c:1,e:'La défense nationale protège le territoire et la population.'},
+{cat:'EMC',q:'Qu’est-ce qu’un citoyen ?',a:['Un touriste','Une personne ayant des droits et des devoirs','Un enfant uniquement','Un étranger sans droit'],c:1,e:'Le citoyen participe à la vie démocratique.'},
+{cat:'EMC',q:'Quelle liberté permet d’exprimer ses opinions ?',a:['Liberté d’expression','Liberté militaire','Liberté économique','Liberté fiscale'],c:0,e:'La liberté d’expression est un droit fondamental.'},
+{cat:'EMC',q:'Quel symbole représente la République française ?',a:['Le lion','Marianne','Le dragon','Le coq belge'],c:1,e:'Marianne symbolise la République française.'},
+{cat:'EMC',q:'Pourquoi faut-il vérifier les sources ?',a:['Pour gagner du temps','Pour éviter les fausses informations','Pour supprimer Internet','Pour voter'],c:1,e:'Comparer les sources aide à développer l’esprit critique.'}
+];
+
+let currentQuestions=[];
+let current=0;
+let score=0;
+let details=[];
+
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5)}
+
+function startQCM(){
+  const hist = shuffle(questions.filter(q=>q.cat==='Histoire')).slice(0,5);
+  const geo = shuffle(questions.filter(q=>q.cat==='Géographie')).slice(0,5);
+  const emc = shuffle(questions.filter(q=>q.cat==='EMC')).slice(0,5);
+  currentQuestions = shuffle([...hist,...geo,...emc]);
+  current=0; score=0; details=[];
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('details').classList.add('hidden');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=currentQuestions[current];
+  document.getElementById('questionCounter').textContent=`Question ${current+1}/15`;
+  document.getElementById('questionText').textContent=`[${q.cat}] ${q.q}`;
+  document.getElementById('progressBar').style.width=`${(current/15)*100}%`;
+  const answers=document.getElementById('answers');
+  answers.innerHTML='';
+  const feedback=document.getElementById('feedback');
+  feedback.style.display='none';
+
+  q.a.forEach((ans,index)=>{
+    const btn=document.createElement('button');
+    btn.className='answer-btn';
+    btn.textContent=ans;
+    btn.setAttribute('aria-label',`Réponse ${ans}`);
+    btn.onclick=()=>checkAnswer(index);
+    answers.appendChild(btn);
+  });
+}
+
+function checkAnswer(index){
+  const q=currentQuestions[current];
+  const feedback=document.getElementById('feedback');
+  const good=index===q.c;
+  if(good) score++;
+
+  details.push({question:q.q,correct:q.a[q.c],exp:q.e,user:q.a[index]});
+
+  feedback.className=`feedback ${good?'correct':'incorrect'}`;
+  feedback.style.display='block';
+  feedback.innerHTML=`${good?'✅ Bonne réponse !':'❌ Mauvaise réponse'}<br><strong>Correction :</strong> ${q.a[q.c]}<br>${q.e}`;
+
+  setTimeout(()=>{
+    current++;
+    if(current<15){
+      renderQuestion();
+    }else{
+      endQCM();
+    }
+  },1800);
+}
+
+function mention(note){
+  if(note>=16) return 'Très Bien';
+  if(note>=14) return 'Bien';
+  if(note>=12) return 'Assez Bien';
+  return 'Passable';
+}
+
+function endQCM(){
+  document.getElementById('progressBar').style.width='100%';
+  const note=((score/15)*20).toFixed(1);
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').innerHTML=`
+    <div class="card">
+      <h3>🎉 Résultat final</h3>
+      <p><strong>${score}/15</strong> — soit <strong>${note}/20</strong></p>
+      <p>Mention probable : <strong>${mention(note)}</strong></p>
+    </div>`;
+  saveScore(score);
+  updateStats();
+}
+
+function saveScore(s){
+  const scores=JSON.parse(localStorage.getItem('brevetScores')||'[]');
+  scores.unshift(s);
+  if(scores.length>10) scores.pop();
+  localStorage.setItem('brevetScores',JSON.stringify(scores));
+}
+
+function updateStats(){
+  const scores=JSON.parse(localStorage.getItem('brevetScores')||'[]');
+  const best=Math.max(...scores,0);
+  const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):0;
+  document.getElementById('bestScore').textContent=`${best}/15`;
+  document.getElementById('avgScore').textContent=`${avg}/15`;
+  document.getElementById('sessionCount').textContent=scores.length;
+
+  const svg=document.getElementById('chart');
+  svg.innerHTML='';
+  scores.forEach((s,i)=>{
+    const h=s*14;
+    const x=40+i*50;
+    const y=230-h;
+    svg.innerHTML+=`<rect x="${x}" y="${y}" width="32" height="${h}" fill="#1f4f82"></rect>`;
+    svg.innerHTML+=`<text x="${x+8}" y="245" fill="currentColor">${i+1}</text>`;
+    svg.innerHTML+=`<text x="${x+4}" y="${y-6}" fill="currentColor">${s}</text>`;
+  });
+}
+
+// Détails QCM
+
+document.getElementById('detailsBtn').onclick=()=>{
+  const div=document.getElementById('details');
+  div.classList.toggle('hidden');
+  div.innerHTML=details.map((d,i)=>`
+    <div class="card">
+      <h4>${i+1}. ${d.question}</h4>
+      <p><strong>Votre réponse :</strong> ${d.user}</p>
+      <p><strong>Bonne réponse :</strong> ${d.correct}</p>
+      <p>${d.exp}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('restartBtn').onclick=startQCM;
+document.getElementById('resetScores').onclick=()=>{
+  localStorage.removeItem('brevetScores');
+  updateStats();
+}
+
+startQCM();
+updateStats();
+
+// Développements construits
+const topics=[
+{
+ title:'Décrivez et expliquez les violences de la Seconde Guerre mondiale',
+ intro:'La Seconde Guerre mondiale (1939-1945) est un conflit mondial marqué par une violence extrême. Les civils comme les militaires sont touchés. Cette guerre est une guerre d’anéantissement.',
+ plan:['I. Une guerre mondiale totale','II. Des violences de masse contre les civils','III. Le génocide des Juifs et des Tsiganes'],
+ conclusion:'La Seconde Guerre mondiale provoque des destructions immenses et un traumatisme durable. Elle conduit à la création de l’ONU et aux procès de Nuremberg.',
+ mots:['génocide','Shoah','guerre totale','camp d’extermination','violence de masse'],
+ dates:['1939','1942','1945']
+},
+{
+ title:'La guerre froide : un affrontement Est-Ouest',
+ intro:'Après 1945, le monde se divise en deux blocs opposés dirigés par les États-Unis et l’URSS. Cette opposition idéologique et géopolitique est appelée guerre froide.',
+ plan:['I. Deux blocs opposés','II. Des crises majeures','III. La fin de la guerre froide'],
+ conclusion:'La guerre froide structure les relations internationales jusqu’en 1991.',
+ mots:['capitalisme','communisme','OTAN','mur de Berlin','équilibre de la terreur'],
+ dates:['1947','1961','1989']
+},
+{
+ title:'Décolonisation : du processus aux conséquences (1947-1962)',
+ intro:'Après la Seconde Guerre mondiale, les colonies réclament leur indépendance. Ce mouvement de décolonisation transforme le monde.',
+ plan:['I. Les causes de la décolonisation','II. Des indépendances parfois violentes','III. Les conséquences géopolitiques'],
+ conclusion:'La décolonisation donne naissance à de nouveaux États mais entraîne aussi des tensions.',
+ mots:['indépendance','tiers-monde','nationalisme','colonisation'],
+ dates:['1947','1954','1962']
+},
+{
+ title:'Montrez comment les aires urbaines transforment les territoires français',
+ intro:'Les aires urbaines concentrent la population et les activités. Elles transforment profondément les territoires français.',
+ plan:['I. La métropolisation','II. Les mobilités quotidiennes','III. Les conséquences sur les espaces ruraux'],
+ conclusion:'Les villes structurent aujourd’hui le territoire français.',
+ mots:['métropolisation','périurbanisation','mobilités','aire urbaine'],
+ dates:['aucune date obligatoire']
+},
+{
+ title:'La France et l’Union européenne dans le monde',
+ intro:'La France et l’Union européenne occupent une place importante dans la mondialisation grâce à leur puissance économique et diplomatique.',
+ plan:['I. Une puissance économique','II. Une influence culturelle et diplomatique','III. Des limites et des défis'],
+ conclusion:'La France et l’UE restent influentes malgré la concurrence mondiale.',
+ mots:['puissance','mondialisation','UE','soft power'],
+ dates:['1957','1992']
+},
+{
+ title:'La construction européenne depuis 1957 : étapes et enjeux',
+ intro:'Depuis 1957, plusieurs États européens coopèrent pour assurer la paix et le développement économique.',
+ plan:['I. Les grandes étapes','II. Les élargissements','III. Les défis actuels'],
+ conclusion:'L’Union européenne est un espace intégré mais confronté à des difficultés.',
+ mots:['CEE','UE','euro','Schengen'],
+ dates:['1957','1992','2002']
+},
+{
+ title:'Les principes et valeurs de la République française',
+ intro:'La République française repose sur des principes et des valeurs inscrits dans la Constitution.',
+ plan:['I. Les principes républicains','II. Les valeurs de la République','III. Les droits et devoirs des citoyens'],
+ conclusion:'Ces principes garantissent la démocratie et le vivre-ensemble.',
+ mots:['laïcité','égalité','liberté','citoyenneté'],
+ dates:['1789','1958']
+},
+{
+ title:'Le rôle des médias dans une démocratie',
+ intro:'Les médias jouent un rôle essentiel dans une démocratie car ils informent les citoyens.',
+ plan:['I. Informer les citoyens','II. Les risques de désinformation','III. Développer l’esprit critique'],
+ conclusion:'La liberté des médias est essentielle mais doit s’accompagner d’un esprit critique.',
+ mots:['EMI','désinformation','presse','réseaux sociaux'],
+ dates:['1881']
+},
+{
+ title:'Comment la laïcité garantit-elle le vivre-ensemble en France ?',
+ intro:'La laïcité garantit la liberté de conscience et l’égalité entre les citoyens.',
+ plan:['I. La séparation de l’État et des religions','II. La protection des libertés','III. Les défis contemporains'],
+ conclusion:'La laïcité favorise le respect mutuel dans une société diverse.',
+ mots:['neutralité','égalité','religion','République'],
+ dates:['1905']
+}
+];
+
+const topicsDiv=document.getElementById('topics');
+const topicContent=document.getElementById('topicContent');
+
+topics.forEach((t,i)=>{
+  const btn=document.createElement('button');
+  btn.className='topic-btn';
+  btn.textContent=t.title;
+  btn.onclick=()=>showTopic(i);
+  topicsDiv.appendChild(btn);
+});
+
+function showTopic(i){
+  const t=topics[i];
+  topicContent.innerHTML=`
+    <div class="card">
+      <h2>${t.title}</h2>
+      <h3>Introduction modèle</h3>
+      <p>${t.intro}</p>
+      <h3>Plan conseillé</h3>
+      <ul>${t.plan.map(p=>`<li>${p}</li>`).join('')}</ul>
+      <h3>Conclusion modèle</h3>
+      <p>${t.conclusion}</p>
+      <h3>Mots-clés à utiliser</h3>
+      ${t.mots.map(m=>`<span class="badge">${m}</span>`).join('')}
+      <h3>Dates à citer</h3>
+      ${t.dates.map(d=>`<span class="badge">${d}</span>`).join('')}
+      <h3>Check-list méthode</h3>
+      <ul>
+        <li>✔ Introduction avec problématique</li>
+        <li>✔ Plan organisé en parties</li>
+        <li>✔ Exemples précis</li>
+        <li>✔ Connecteurs logiques</li>
+        <li>✔ Conclusion claire</li>
+      </ul>
+      <h3>Ma rédaction</h3>
+      <textarea id="writingArea" placeholder="Rédige ici ton développement construit..."></textarea>
+      <p id="counter">0 mots • 0 lignes</p>
+      <button onclick="document.getElementById('writingArea').value='';updateCounter()">Effacer ma rédaction</button>
+    </div>
+  `;
+
+  const area=document.getElementById('writingArea');
+  area.addEventListener('input',updateCounter);
+}
+
+function updateCounter(){
+  const area=document.getElementById('writingArea');
+  if(!area) return;
+  const words=area.value.trim().split(/\s+/).filter(Boolean).length;
+  const lines=area.value.split('\n').length;
+  document.getElementById('counter').textContent=`${words} mots • ${lines} lignes`;
+}
+
+// Études de documents
+const docs=[
+{
+ title:'Histoire – Appel du 18 juin',
+ source:'Extrait fictif inspiré du discours du général de Gaulle, Londres, 18 juin 1940.',
+ text:'« La France a perdu une bataille mais elle n’a pas perdu la guerre. Les forces françaises peuvent continuer le combat avec les Alliés afin de libérer le territoire national. »',
+ questions:['Quelle est la nature du document ?','Qui parle dans ce texte ?','Pourquoi ce discours est-il important dans l’histoire de la Résistance ?','Montrez que ce document est un appel à poursuivre le combat.'],
+ correction:['C’est un discours radiophonique.','Le général de Gaulle.','Il marque le début de la France libre et de la Résistance extérieure.','De Gaulle refuse la défaite et encourage les Français à continuer la lutte contre l’Allemagne nazie.']
+},
+{
+ title:'Histoire – Guerre froide',
+ source:'Affiche fictive de propagande américaine, 1950.',
+ text:'L’affiche représente un soldat américain protégeant l’Europe face à une menace soviétique symbolisée par un drapeau rouge.',
+ questions:['Quelle est la nature du document ?','Quel pays est présenté comme une menace ?','Comment ce document illustre-t-il la guerre froide ?','Quel regard critique peut-on porter sur cette affiche ?'],
+ correction:['C’est une affiche de propagande.','L’URSS est présentée comme une menace.','Elle oppose les blocs américain et soviétique.','Cette affiche cherche à influencer l’opinion publique en faveur des États-Unis.']
+},
+{
+ title:'Géographie – Métropolisation',
+ source:'Description d’une carte de l’aire urbaine de Lyon, 2024.',
+ text:'La carte montre une forte concentration des emplois dans le centre-ville et des déplacements quotidiens importants depuis les périphéries.',
+ questions:['Quel espace est étudié ?','Quel phénomène est visible ?','Pourquoi les habitants se déplacent-ils ?','Expliquez les conséquences de la métropolisation.'],
+ correction:['Une aire urbaine.','La métropolisation et les mobilités pendulaires.','Les habitants vont travailler ou étudier dans le centre.','La métropolisation entraîne l’étalement urbain et des besoins en transports.']
+},
+{
+ title:'Géographie – Territoires ultramarins',
+ source:'Texte fictif sur la Guyane française.',
+ text:'La Guyane possède une importante biodiversité et le centre spatial de Kourou, mais souffre aussi d’un enclavement de certains territoires.',
+ questions:['Quel territoire est présenté ?','Citez un atout du territoire.','Quelle difficulté est mentionnée ?','Montrez que les territoires ultramarins présentent des contrastes.'],
+ correction:['La Guyane française.','Le centre spatial de Kourou ou la biodiversité.','L’enclavement.','Les outre-mer ont des atouts économiques mais aussi des difficultés sociales et géographiques.']
+},
+{
+ title:'EMC – Laïcité',
+ source:'Extrait fictif de la charte de la laïcité à l’école.',
+ text:'« La République assure la liberté de conscience. Chacun est libre de croire ou de ne pas croire. »',
+ questions:['Quel principe républicain est évoqué ?','Quelle liberté est protégée ?','Pourquoi la laïcité est-elle importante à l’école ?','Donnez un exemple concret de respect de la laïcité.'],
+ correction:['La laïcité.','La liberté de conscience.','Elle garantit le respect de tous les élèves.','Les signes religieux ostensibles sont interdits dans les écoles publiques.']
+},
+{
+ title:'EMC – Médias et démocratie',
+ source:'Statistique fictive publiée par un journal en ligne, 2025.',
+ text:'65 % des adolescents déclarent s’informer principalement via les réseaux sociaux.',
+ questions:['Quel type de document est présenté ?','Quel média est le plus utilisé ?','Quels risques cela peut-il entraîner ?','Expliquez pourquoi l’EMI est importante aujourd’hui.'],
+ correction:['Une statistique.','Les réseaux sociaux.','La désinformation ou les fake news.','L’EMI aide à vérifier les sources et développer l’esprit critique.']
+}
+];
+
+const docContainer=document.getElementById('documentStudies');
+docs.forEach((d,i)=>{
+  const article=document.createElement('article');
+  article.className='card';
+  article.innerHTML=`
+    <h2>${d.title}</h2>
+    <p><strong>Source :</strong> ${d.source}</p>
+    <blockquote>${d.text}</blockquote>
+    <ol>
+      ${d.questions.map(q=>`<li>${q}<br><textarea placeholder="Ta réponse..."></textarea></li>`).join('')}
+    </ol>
+    <button onclick="toggleCorrection(${i})">Voir un corrigé attendu</button>
+    <div id="corr${i}" class="hidden">
+      <h3>Corrigé</h3>
+      <ul>${d.correction.map(c=>`<li>${c}</li>`).join('')}</ul>
+    </div>
+  `;
+  docContainer.appendChild(article);
+});
+
+function toggleCorrection(i){
+  document.getElementById('corr'+i).classList.toggle('hidden');
+}
+</script>
+</body>
+</html>
+```
