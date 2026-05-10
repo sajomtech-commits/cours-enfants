@@ -3,46 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cours &amp; Contrôles</title>
+<title>Cours &amp; Controles</title>
 <style>
-  body { font-family: -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; background: #f8fafc; color: #1e293b; }
-  h1 { font-size: 24px; margin-bottom: 4px; }
-  p.sub { color: #64748b; margin-bottom: 32px; }
-  .section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
-  .section h2 { font-size: 16px; margin-bottom: 4px; color: #1e293b; }
-  .section .niveau { font-size: 12px; color: #6366f1; font-weight: 600; margin-bottom: 12px; display: block; }
-  .section ul { list-style: none; padding: 0; margin: 0; }
-  .section li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 10px; }
-  .section li:last-child { border-bottom: none; }
-  .section a { color: #1e293b; text-decoration: none; font-size: 15px; flex: 1; }
-  .section a:hover { color: #6366f1; }
-  .tag { font-size: 11px; background: #ede9fe; color: #6366f1; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
-  .empty { color: #94a3b8; font-size: 14px; font-style: italic; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; background: #f8fafc; color: #1e293b; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .sub { color: #64748b; margin-bottom: 32px; font-size: 15px; }
+  .classe { background: white; border-radius: 14px; padding: 0; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); overflow: hidden; }
+  .classe-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 14px; border-bottom: 1px solid #f1f5f9; }
+  .classe-header h2 { font-size: 18px; font-weight: 700; margin: 0; }
+  .badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .matieres { padding: 8px 0; }
+  details { border-bottom: 1px solid #f8fafc; }
+  details:last-child { border-bottom: none; }
+  summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; cursor: pointer; list-style: none; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; margin-right: 10px; color: #94a3b8; transition: transform .2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: #f8fafc; }
+  .mat-name { font-size: 15px; font-weight: 500; flex: 1; }
+  .count { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 12px; }
+  .mat-content { padding: 4px 20px 14px 40px; }
+  .mat-content ul { list-style: none; padding: 0; margin: 0; }
+  .mat-content li { padding: 9px 0; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+  .mat-content li:last-child { border-bottom: none; }
+  .mat-content a { color: #1e293b; text-decoration: none; font-size: 14px; flex: 1; }
+  .mat-content a:hover { color: #6366f1; text-decoration: underline; }
+  .ext { font-size: 11px; color: #94a3b8; background: #f1f5f9; padding: 1px 6px; border-radius: 6px; }
+  .empty { font-size: 13px; color: #94a3b8; font-style: italic; margin: 0; padding: 6px 0; }
 </style>
 </head>
 <body>
-<h1>Cours &amp; Contrôles</h1>
-<p class="sub">Mayssa &middot; Assiya &middot; Amine</p>
+<h1>Cours &amp; Controles</h1>
+<p class="sub">CM2 &middot; 5eme &middot; 3eme</p>
 
-<div class="section">
-  <h2>Mayssa</h2><span class="niveau">5ème</span>
-  <ul>
-    <li><a href="mayssa/evaluation2-histoire-5e.html">Evaluation2 Histoire 5E</a><span class="tag">Mayssa</span></li>
-    <li><a href="mayssa/mayssa_calcul_litteral_5eme.html">Mayssa Calcul Litteral 5Eme</a><span class="tag">Mayssa</span></li>
-    <li><a href="mayssa/quiz-calcul-litteral.html">Quiz Calcul Litteral</a><span class="tag">Mayssa</span></li>
-  </ul>
+<div class="classe">
+  <div class="classe-header" style="border-left:4px solid #10b981">
+    <div>
+      <h2 style="color:#10b981">CM2</h2>
+    </div>
+    <span class="badge" style="background:#d1fae5;color:#10b981">1 fichier</span>
+  </div>
+  <div class="matieres">
+    <details >
+      <summary>
+        <span class="mat-name">Maths</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Physique-Chimie</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">SVT</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Techno</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Espagnol</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Anglais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Francais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details open>
+      <summary>
+        <span class="mat-name">Histoire-Geo</span>
+        <span class="count" style="color:#10b981;background:#d1fae5">1 fichier</span>
+      </summary>
+      <div class="mat-content"><ul><li><a href="cm2/evaluation-ww1-cm2-assiya.html" target="_blank">Evaluation - Premiere Guerre Mondiale</a><span class="ext">.html</span></li></ul></div>
+    </details>
+  </div>
 </div>
-<div class="section">
-  <h2>Assiya</h2><span class="niveau">CM2</span>
-  <ul>
-    <li><a href="assiya/evaluation-ww1-cm2-assiya.html">Evaluation Ww1 Cm2 Assiya</a><span class="tag">Assiya</span></li>
-  </ul>
+<div class="classe">
+  <div class="classe-header" style="border-left:4px solid #6366f1">
+    <div>
+      <h2 style="color:#6366f1">5eme</h2>
+    </div>
+    <span class="badge" style="background:#ede9fe;color:#6366f1">3 fichiers</span>
+  </div>
+  <div class="matieres">
+    <details open>
+      <summary>
+        <span class="mat-name">Maths</span>
+        <span class="count" style="color:#6366f1;background:#ede9fe">2 fichiers</span>
+      </summary>
+      <div class="mat-content"><ul><li><a href="5eme/mayssa_calcul_litteral_5eme.html" target="_blank">Calcul Litteral</a><span class="ext">.html</span></li><li><a href="5eme/quiz-calcul-litteral.html" target="_blank">Quiz - Calcul Litteral</a><span class="ext">.html</span></li></ul></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Physique-Chimie</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">SVT</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Techno</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Espagnol</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Anglais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Francais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details open>
+      <summary>
+        <span class="mat-name">Histoire-Geo</span>
+        <span class="count" style="color:#6366f1;background:#ede9fe">1 fichier</span>
+      </summary>
+      <div class="mat-content"><ul><li><a href="5eme/evaluation2-histoire-5e.html" target="_blank">Evaluation 2 - Histoire</a><span class="ext">.html</span></li></ul></div>
+    </details>
+  </div>
 </div>
-<div class="section">
-  <h2>Amine</h2><span class="niveau">3ème</span>
-  <ul>
-    <li class="empty">Aucun fichier pour l'instant</li>
-  </ul>
+<div class="classe">
+  <div class="classe-header" style="border-left:4px solid #f59e0b">
+    <div>
+      <h2 style="color:#f59e0b">3eme</h2>
+    </div>
+    <span class="badge" style="background:#f1f5f9;color:#94a3b8">vide</span>
+  </div>
+  <div class="matieres">
+    <details >
+      <summary>
+        <span class="mat-name">Maths</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Physique-Chimie</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">SVT</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Techno</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Espagnol</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Anglais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Francais</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+    <details >
+      <summary>
+        <span class="mat-name">Histoire-Geo</span>
+        <span class="count" style="color:#94a3b8;background:#f8fafc">vide</span>
+      </summary>
+      <div class="mat-content"><p class="empty">Aucun fichier pour l'instant</p></div>
+    </details>
+  </div>
 </div>
 </body>
 </html>
