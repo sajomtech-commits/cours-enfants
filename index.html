@@ -13,11 +13,9 @@ body {
   color: #1e293b;
   min-height: 100vh;
 }
-
 body::before {
   content: '';
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image: radial-gradient(circle, #a5b4fc 1px, transparent 1px);
   background-size: 30px 30px;
   opacity: 0.25;
@@ -33,50 +31,35 @@ body::before {
   position: relative;
   overflow: hidden;
 }
-.header-deco {
-  position: absolute;
-  font-size: 140px;
-  opacity: 0.07;
-  line-height: 1;
-  pointer-events: none;
-}
-.header-deco.left  { top: -10px; left: -20px; transform: rotate(-12deg); }
-.header-deco.right { bottom: -20px; right: -10px; transform: rotate(15deg); }
+.hd { position: absolute; font-size: 140px; opacity: .07; line-height: 1; pointer-events: none; }
+.hd.L { top: -10px; left: -20px; transform: rotate(-12deg); }
+.hd.R { bottom: -20px; right: -10px; transform: rotate(15deg); }
 
-.header h1 {
-  font-size: 34px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.5px;
-  margin-bottom: 6px;
-}
+.header h1 { font-size: 34px; font-weight: 800; color: #fff; letter-spacing: -.5px; margin-bottom: 6px; }
 .header h1 span { opacity: .85; font-weight: 400; }
-.header .tagline {
-  color: rgba(255,255,255,.65);
-  font-size: 14px;
-  margin-bottom: 24px;
-}
+.tagline { color: rgba(255,255,255,.65); font-size: 14px; margin-bottom: 10px; }
 
-/* Student pills */
-.students-row {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
+.srv-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+  transition: all .4s;
 }
+.srv-badge.on  { background: rgba(16,185,129,.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,.3); }
+.srv-badge.off { background: rgba(255,255,255,.1); color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.15); }
+.srv-dot { width: 7px; height: 7px; border-radius: 50%; }
+.srv-badge.on  .srv-dot { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.srv-badge.off .srv-dot { background: rgba(255,255,255,.4); }
+
+.students-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .s-pill {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,.14);
   border: 1.5px solid rgba(255,255,255,.22);
   border-radius: 50px;
   padding: 6px 16px 6px 6px;
-  cursor: pointer;
-  transition: all .18s;
-  color: #fff;
-  font-weight: 600;
-  font-size: 14px;
+  cursor: pointer; transition: all .18s;
+  color: #fff; font-weight: 600; font-size: 14px;
 }
 .s-pill:hover, .s-pill.active {
   background: rgba(255,255,255,.26);
@@ -85,194 +68,199 @@ body::before {
   box-shadow: 0 4px 12px rgba(0,0,0,.18);
 }
 .s-pill .av {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0;
 }
-.s-pill .classe-tag {
-  font-size: 11px;
-  font-weight: 700;
-  opacity: .7;
-  margin-left: 2px;
-}
+.ct { font-size: 11px; font-weight: 700; opacity: .7; margin-left: 2px; }
 
 /* ── MAIN ── */
-.main {
-  max-width: 960px;
-  margin: -28px auto 0;
-  padding: 0 16px 48px;
-  position: relative;
-  z-index: 1;
-}
+.main { max-width: 960px; margin: -28px auto 0; padding: 0 16px 48px; position: relative; z-index: 1; }
 
 /* ── TABS ── */
 .tabs-bar {
-  display: flex;
-  background: #fff;
-  border-radius: 16px;
-  padding: 5px;
+  display: flex; background: #fff;
+  border-radius: 16px; padding: 5px;
   box-shadow: 0 4px 24px rgba(67,56,202,.12);
-  margin-bottom: 24px;
-  gap: 4px;
+  margin-bottom: 24px; gap: 4px;
 }
 .tab-btn {
-  flex: 1;
-  padding: 11px 16px;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .2s;
-  background: transparent;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
+  flex: 1; padding: 11px 16px;
+  border: none; border-radius: 12px;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+  background: transparent; color: #64748b;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
 }
-.tab-btn .tab-icon { font-size: 16px; }
-.tab-btn.active {
-  background: linear-gradient(135deg, #4338ca, #7c3aed);
-  color: #fff;
-  box-shadow: 0 3px 10px rgba(99,102,241,.4);
-}
+.tab-btn.active { background: linear-gradient(135deg,#4338ca,#7c3aed); color: #fff; box-shadow: 0 3px 10px rgba(99,102,241,.4); }
 .tab-btn:hover:not(.active) { background: #f1f5f9; color: #1e293b; }
 
-/* ── GRID ── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-  gap: 18px;
-}
+/* ── GRID & CARDS ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 18px; }
 
-/* ── STUDENT CARD ── */
-.student-card {
-  background: #fff;
-  border-radius: 20px;
+.sc {
+  background: #fff; border-radius: 20px;
   box-shadow: 0 2px 14px rgba(67,56,202,.07);
-  overflow: hidden;
-  transition: transform .2s, box-shadow .2s;
+  overflow: hidden; transition: transform .2s, box-shadow .2s;
 }
-.student-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 28px rgba(67,56,202,.12);
-}
-.student-card.hidden { display: none; }
+.sc:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(67,56,202,.12); }
+.sc.hidden { display: none; }
 
-.card-top {
-  padding: 20px 20px 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.ct2 {
+  padding: 18px 18px 14px;
+  display: flex; align-items: center; gap: 12px;
   border-bottom: 1.5px solid #f1f5f9;
 }
-.card-av {
-  width: 52px;
-  height: 52px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 800;
-  color: #fff;
-  flex-shrink: 0;
-  letter-spacing: -1px;
+.av2 {
+  width: 50px; height: 50px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; color: #fff; flex-shrink: 0;
 }
-.card-info h2 { font-size: 19px; font-weight: 800; line-height: 1.2; }
-.card-badge {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 10px;
-  border-radius: 20px;
-  margin-top: 4px;
-  letter-spacing: .3px;
+.ci h2 { font-size: 18px; font-weight: 800; line-height: 1.2; }
+.cb {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 2px 10px; border-radius: 20px; margin-top: 4px;
 }
-.card-stat {
-  margin-left: auto;
-  text-align: right;
-  flex-shrink: 0;
+.cs { margin-left: auto; text-align: right; flex-shrink: 0; }
+.cs .n { font-size: 24px; font-weight: 800; line-height: 1; }
+.cs .l { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+
+.add-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  border: none; cursor: pointer;
+  align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 300; line-height: 1;
+  transition: all .18s; flex-shrink: 0; color: #fff;
+  display: none;
 }
-.card-stat .n { font-size: 26px; font-weight: 800; line-height: 1; }
-.card-stat .lbl { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.add-btn:hover { transform: scale(1.12); filter: brightness(1.1); }
 
 /* ── SUBJECTS ── */
-.subjects { padding: 6px 0; }
-
+.subs { padding: 6px 0; }
 details { border-bottom: 1px solid #f8fafc; }
 details:last-child { border-bottom: none; }
-
 summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 18px;
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  transition: background .15s;
-  border-radius: 0;
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 18px; cursor: pointer; list-style: none;
+  user-select: none; transition: background .15s;
 }
 summary::-webkit-details-marker { display: none; }
 summary:hover { background: #fafbff; }
+.si { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+.sn { font-size: 13px; font-weight: 600; color: #475569; flex: 1; }
+.sk { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 10px; margin-right: 4px; }
+.sa { font-size: 9px; color: #cbd5e1; transition: transform .2s; flex-shrink: 0; }
+details[open] > summary .sa { transform: rotate(90deg); }
 
-.s-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
-.s-name { font-size: 13px; font-weight: 600; color: #475569; flex: 1; }
-.s-count {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 9px;
-  border-radius: 10px;
-  margin-right: 4px;
-}
-.s-arrow {
-  font-size: 9px;
-  color: #cbd5e1;
-  transition: transform .2s;
-  flex-shrink: 0;
-}
-details[open] > summary .s-arrow { transform: rotate(90deg); }
+.fl { padding: 4px 18px 12px 50px; }
+.fi { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 1px solid #f8fafc; }
+.fi:last-child { border-bottom: none; }
+.fd { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.fi a { font-size: 13px; color: #334155; text-decoration: none; flex: 1; transition: color .15s; }
+.fi a:hover { color: #4338ca; text-decoration: underline; }
+.ex { font-size: 10px; background: #f1f5f9; color: #94a3b8; padding: 2px 7px; border-radius: 6px; font-weight: 700; }
 
-/* File list */
-.file-list { padding: 4px 18px 12px 50px; }
-.file-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 0;
-  border-bottom: 1px solid #f8fafc;
-}
-.file-item:last-child { border-bottom: none; }
-.file-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.file-item a {
-  font-size: 13px;
-  color: #334155;
-  text-decoration: none;
-  flex: 1;
-  transition: color .15s;
-}
-.file-item a:hover { color: #4338ca; text-decoration: underline; }
-.ext { font-size: 10px; background: #f1f5f9; color: #94a3b8; padding: 2px 7px; border-radius: 6px; font-weight: 700; }
+.empty-c { padding: 32px 20px; text-align: center; color: #cbd5e1; }
+.empty-c .ei { font-size: 38px; margin-bottom: 8px; }
+.empty-c p { font-size: 13px; font-style: italic; }
 
-/* Empty states */
-.empty-card {
-  padding: 32px 20px;
-  text-align: center;
-  color: #cbd5e1;
+/* ── MODAL ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(15,23,42,.6);
+  backdrop-filter: blur(5px);
+  display: none; align-items: center; justify-content: center;
+  padding: 16px;
 }
-.empty-card .ei { font-size: 38px; margin-bottom: 8px; }
-.empty-card p { font-size: 13px; font-style: italic; }
+.overlay.open { display: flex; }
+.modal {
+  background: #fff; border-radius: 22px;
+  width: 100%; max-width: 440px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.22);
+  overflow: hidden;
+  animation: pop .25s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes pop { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-/* Tab panes */
+.mh {
+  padding: 20px 22px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+}
+.mh h3 { font-size: 17px; font-weight: 700; }
+.xbtn {
+  width: 30px; height: 30px; border-radius: 8px; border: none;
+  background: #f1f5f9; color: #64748b; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.xbtn:hover { background: #e2e8f0; }
+
+.mb { padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 14px; }
+
+.fg label {
+  display: block; font-size: 11px; font-weight: 700;
+  color: #64748b; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px;
+}
+.fg select, .fg input[type=text] {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  font-size: 14px; color: #1e293b; background: #f8fafc;
+  outline: none; transition: border-color .15s; appearance: none;
+}
+.fg select:focus, .fg input[type=text]:focus { border-color: #6366f1; background: #fff; }
+
+.tt { display: flex; gap: 6px; }
+.tbtn {
+  flex: 1; padding: 9px 12px;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  background: #f8fafc; color: #64748b;
+  cursor: pointer; transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.tbtn.active {
+  background: linear-gradient(135deg,#4338ca,#7c3aed);
+  color: #fff; border-color: transparent;
+  box-shadow: 0 2px 8px rgba(99,102,241,.35);
+}
+
+.dz {
+  border: 2px dashed #c7d2fe; border-radius: 12px;
+  padding: 26px 16px; text-align: center;
+  cursor: pointer; transition: all .2s; background: #f8fafc;
+}
+.dz:hover, .dz.over { border-color: #6366f1; background: #eef2ff; }
+.dz .dzi { font-size: 28px; margin-bottom: 6px; }
+.dz p { font-size: 13px; color: #64748b; }
+.dz .dzf { font-size: 13px; font-weight: 600; color: #4338ca; margin-top: 6px; display: none; }
+
+.sbtn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg,#4338ca,#7c3aed);
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(99,102,241,.4);
+  transition: all .2s; margin-top: 4px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.sbtn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.sbtn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 18px; border-radius: 12px;
+  font-size: 14px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok  { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.toast.err { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
 </style>
@@ -280,10 +268,14 @@ details[open] > summary .s-arrow { transform: rotate(90deg); }
 <body>
 
 <div class="header">
-  <div class="header-deco left">📚</div>
-  <div class="header-deco right">✏️</div>
+  <div class="hd L">📚</div>
+  <div class="hd R">✏️</div>
   <h1>📖 Cours &amp; <span>Contrôles</span></h1>
-  <p class="tagline">Espace de révision personnel &nbsp;·&nbsp; 3 élèves</p>
+  <p class="tagline">Espace de révision personnel · 3 élèves</p>
+  <div class="srv-badge off" id="srv-badge">
+    <div class="srv-dot"></div>
+    <span id="srv-label">Chargement…</span>
+  </div>
   <div class="students-row">
     <div class="s-pill active" onclick="filterStudent('all',this)">
       <div class="av" style="background:rgba(255,255,255,.25)">👥</div>
@@ -291,257 +283,242 @@ details[open] > summary .s-arrow { transform: rotate(90deg); }
     </div>
     <div class="s-pill" onclick="filterStudent('assiya',this)">
       <div class="av" style="background:#059669">A</div>
-      Assiya <span class="classe-tag">CM2</span>
+      Assiya <span class="ct">CM2</span>
     </div>
     <div class="s-pill" onclick="filterStudent('mayssa',this)">
       <div class="av" style="background:#4f46e5">M</div>
-      Mayssa <span class="classe-tag">5ème</span>
+      Mayssa <span class="ct">5ème</span>
     </div>
     <div class="s-pill" onclick="filterStudent('amine',this)">
       <div class="av" style="background:#d97706">A</div>
-      Amine <span class="classe-tag">3ème</span>
+      Amine <span class="ct">3ème</span>
     </div>
   </div>
 </div>
 
 <div class="main">
-
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="showTab('cours',this)">
-      <span class="tab-icon">📖</span> Cours
-    </button>
-    <button class="tab-btn" onclick="showTab('controles',this)">
-      <span class="tab-icon">📝</span> Exercices &amp; Contrôles
-    </button>
+    <button class="tab-btn active" onclick="showTab('cours',this)"><span>📖</span> Cours</button>
+    <button class="tab-btn" onclick="showTab('controles',this)"><span>📝</span> Exercices &amp; Contrôles</button>
   </div>
-
-  <!-- ══ TAB COURS ══ -->
-  <div class="tab-pane active" id="tab-cours">
-    <div class="grid">
-
-      <!-- Assiya -->
-      <div class="student-card" data-student="assiya">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#10b981,#059669)">As</div>
-          <div class="card-info">
-            <h2 style="color:#059669">Assiya</h2>
-            <span class="card-badge" style="background:#d1fae5;color:#059669">CM2</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#10b981">1</div>
-            <div class="lbl">fichier</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <details open>
-            <summary>
-              <span class="s-icon">📐</span>
-              <span class="s-name">Exercices</span>
-              <span class="s-count" style="background:#d1fae5;color:#059669">1</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#10b981"></div>
-                <a href="assiya/exercices-assiya.html" target="_blank">Exercices – Assiya</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Mayssa -->
-      <div class="student-card" data-student="mayssa">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">Ma</div>
-          <div class="card-info">
-            <h2 style="color:#4f46e5">Mayssa</h2>
-            <span class="card-badge" style="background:#ede9fe;color:#4f46e5">5ème</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#6366f1">0</div>
-            <div class="lbl">fichiers</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <div class="empty-card">
-            <div class="ei">📂</div>
-            <p>Aucun cours pour l'instant</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Amine -->
-      <div class="student-card" data-student="amine">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#f59e0b,#d97706)">Am</div>
-          <div class="card-info">
-            <h2 style="color:#d97706">Amine</h2>
-            <span class="card-badge" style="background:#fef3c7;color:#d97706">3ème</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#f59e0b">0</div>
-            <div class="lbl">fichiers</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <div class="empty-card">
-            <div class="ei">📂</div>
-            <p>Aucun cours pour l'instant</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ══ TAB CONTROLES ══ -->
-  <div class="tab-pane" id="tab-controles">
-    <div class="grid">
-
-      <!-- Assiya -->
-      <div class="student-card" data-student="assiya">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#10b981,#059669)">As</div>
-          <div class="card-info">
-            <h2 style="color:#059669">Assiya</h2>
-            <span class="card-badge" style="background:#d1fae5;color:#059669">CM2</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#10b981">1</div>
-            <div class="lbl">fichier</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <details open>
-            <summary>
-              <span class="s-icon">🌍</span>
-              <span class="s-name">Histoire-Géo</span>
-              <span class="s-count" style="background:#d1fae5;color:#059669">1</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#10b981"></div>
-                <a href="cm2/controles/histoire-geo/evaluation-ww1-cm2-assiya.html" target="_blank">Évaluation WW1 – CM2</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Mayssa -->
-      <div class="student-card" data-student="mayssa">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">Ma</div>
-          <div class="card-info">
-            <h2 style="color:#4f46e5">Mayssa</h2>
-            <span class="card-badge" style="background:#ede9fe;color:#4f46e5">5ème</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#6366f1">3</div>
-            <div class="lbl">fichiers</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <details open>
-            <summary>
-              <span class="s-icon">📐</span>
-              <span class="s-name">Maths</span>
-              <span class="s-count" style="background:#ede9fe;color:#4f46e5">2</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#6366f1"></div>
-                <a href="5eme/controles/maths/mayssa_calcul_litteral_5eme.html" target="_blank">Calcul littéral – 5ème</a>
-                <span class="ext">html</span>
-              </div>
-              <div class="file-item">
-                <div class="file-dot" style="background:#6366f1"></div>
-                <a href="5eme/controles/maths/quiz-calcul-litteral-final-1.html" target="_blank">Quiz calcul littéral – Final 1</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-          <details>
-            <summary>
-              <span class="s-icon">🌍</span>
-              <span class="s-name">Histoire-Géo</span>
-              <span class="s-count" style="background:#ede9fe;color:#4f46e5">1</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#6366f1"></div>
-                <a href="5eme/controles/histoire-geo/evaluation2-histoire-5e.html" target="_blank">Évaluation Histoire – 5ème n°2</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-
-      <!-- Amine -->
-      <div class="student-card" data-student="amine">
-        <div class="card-top">
-          <div class="card-av" style="background:linear-gradient(135deg,#f59e0b,#d97706)">Am</div>
-          <div class="card-info">
-            <h2 style="color:#d97706">Amine</h2>
-            <span class="card-badge" style="background:#fef3c7;color:#d97706">3ème</span>
-          </div>
-          <div class="card-stat">
-            <div class="n" style="color:#f59e0b">3</div>
-            <div class="lbl">fichiers</div>
-          </div>
-        </div>
-        <div class="subjects">
-          <details open>
-            <summary>
-              <span class="s-icon">📐</span>
-              <span class="s-name">Maths</span>
-              <span class="s-count" style="background:#fef3c7;color:#d97706">1</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#f59e0b"></div>
-                <a href="3eme/controles/maths/automatisme-dnb1.html" target="_blank">Automatismes DNB – 1</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-          <details>
-            <summary>
-              <span class="s-icon">🌍</span>
-              <span class="s-name">Histoire-Géo</span>
-              <span class="s-count" style="background:#fef3c7;color:#d97706">2</span>
-              <span class="s-arrow">▶</span>
-            </summary>
-            <div class="file-list">
-              <div class="file-item">
-                <div class="file-dot" style="background:#f59e0b"></div>
-                <a href="3eme/controles/histoire-geo/brevet1.html" target="_blank">Brevet – Entraînement 1</a>
-                <span class="ext">html</span>
-              </div>
-              <div class="file-item">
-                <div class="file-dot" style="background:#f59e0b"></div>
-                <a href="3eme/controles/histoire-geo/brevet2.html" target="_blank">Brevet – Entraînement 2</a>
-                <span class="ext">html</span>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
+  <div class="tab-pane active" id="tab-cours"><div class="grid" id="grid-cours"></div></div>
+  <div class="tab-pane" id="tab-controles"><div class="grid" id="grid-controles"></div></div>
 </div>
 
+<!-- ── MODAL UPLOAD ── -->
+<div class="overlay" id="overlay" onclick="onOverlayClick(event)">
+  <div class="modal">
+    <div class="mh">
+      <h3>📎 Ajouter un fichier</h3>
+      <button class="xbtn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mb">
+
+      <div class="fg">
+        <label>Élève</label>
+        <select id="f-student">
+          <option value="assiya">Assiya – CM2</option>
+          <option value="mayssa">Mayssa – 5ème</option>
+          <option value="amine">Amine – 3ème</option>
+        </select>
+      </div>
+
+      <div class="fg">
+        <label>Type</label>
+        <div class="tt">
+          <button type="button" class="tbtn active" id="tbtn-cours"     onclick="setType('cours')">📖 Cours</button>
+          <button type="button" class="tbtn"        id="tbtn-controles" onclick="setType('controles')">📝 Contrôle</button>
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Matière</label>
+        <select id="f-subject" onchange="onSubjChange()">
+          <option value="maths">📐 Maths</option>
+          <option value="physique-chimie">⚗️ Physique-Chimie</option>
+          <option value="svt">🌿 SVT</option>
+          <option value="techno">💻 Techno</option>
+          <option value="espagnol">🇪🇸 Espagnol</option>
+          <option value="anglais">🇬🇧 Anglais</option>
+          <option value="francais">📝 Français</option>
+          <option value="histoire-geo">🌍 Histoire-Géo</option>
+          <option value="_custom">✏️ Autre…</option>
+        </select>
+        <input type="text" id="f-custom" placeholder="Nom de la matière…" style="display:none;margin-top:8px" />
+      </div>
+
+      <div class="fg">
+        <label>Fichier <span style="font-weight:400;color:#94a3b8;text-transform:none;letter-spacing:0">(HTML ou PDF)</span></label>
+        <div class="dz" id="dz"
+             onclick="document.getElementById('f-file').click()"
+             ondragover="onDragOver(event)"
+             ondragleave="onDragLeave(event)"
+             ondrop="onDrop(event)">
+          <div class="dzi">📎</div>
+          <p>Glisser ici ou cliquer pour choisir</p>
+          <div class="dzf" id="dzf"></div>
+          <input type="file" id="f-file" accept=".html,.pdf" style="display:none" onchange="onFileChange()" />
+        </div>
+      </div>
+
+      <button class="sbtn" id="sbtn" onclick="doUpload()">
+        <span id="sbtn-icon">⬆️</span>
+        <span id="sbtn-lbl">Envoyer</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
+/* ── CONFIG ── */
+const ST = {
+  assiya: { name:'Assiya', classe:'CM2',  p:'#10b981', d:'#059669', bg:'#d1fae5', g:'#10b981,#059669', i:'As' },
+  mayssa: { name:'Mayssa', classe:'5ème', p:'#6366f1', d:'#4f46e5', bg:'#ede9fe', g:'#6366f1,#4f46e5', i:'Ma' },
+  amine:  { name:'Amine',  classe:'3ème', p:'#f59e0b', d:'#d97706', bg:'#fef3c7', g:'#f59e0b,#d97706', i:'Am' },
+};
+const FOLDERS = { assiya:'cm2', mayssa:'5eme', amine:'3eme' };
+const ICONS = {
+  maths:'📐','physique-chimie':'⚗️',svt:'🌿',techno:'💻',
+  espagnol:'🇪🇸',anglais:'🇬🇧',francais:'📝','histoire-geo':'🌍',exercices:'📝',
+};
+const LABELS = {
+  maths:'Maths','physique-chimie':'Physique-Chimie',svt:'SVT',techno:'Techno',
+  espagnol:'Espagnol',anglais:'Anglais',francais:'Français','histoire-geo':'Histoire-Géo',exercices:'Exercices',
+};
+
+/* Données statiques (fallback si serveur éteint) */
+const STATIC = {
+  assiya: {
+    cours:     { exercices: ['exercices-assiya.html'] },
+    controles: { 'histoire-geo': ['evaluation-ww1-cm2-assiya.html'] }
+  },
+  mayssa: {
+    cours: {},
+    controles: {
+      maths: ['mayssa_calcul_litteral_5eme.html','quiz-calcul-litteral-final-1.html'],
+      'histoire-geo': ['evaluation2-histoire-5e.html']
+    }
+  },
+  amine: {
+    cours: {},
+    controles: {
+      maths: ['automatisme-dnb1.html'],
+      'histoire-geo': ['brevet1.html','brevet2.html']
+    }
+  }
+};
+
+let data = STATIC;
+let online = false;
+let filter = 'all';
+let uploadType = 'cours';
+let selectedFile = null;
+
+/* ── INIT ── */
+async function init() {
+  renderAll();
+  try {
+    const r = await fetch('/api/files');
+    if (!r.ok) throw 0;
+    data = await r.json();
+    online = true;
+    renderAll();
+    setBadge(true);
+  } catch {
+    setBadge(false);
+  }
+}
+
+function setBadge(on) {
+  const b = document.getElementById('srv-badge');
+  const l = document.getElementById('srv-label');
+  b.className = 'srv-badge ' + (on ? 'on' : 'off');
+  l.textContent = on ? 'Serveur actif — upload disponible' : 'Mode lecture seule';
+}
+
+/* ── RENDER ── */
+function renderAll() {
+  ['cours','controles'].forEach(t => {
+    document.getElementById('grid-' + t).innerHTML =
+      Object.keys(ST).map(k => buildCard(k, t)).join('');
+  });
+  applyFilter(filter);
+}
+
+function prettyName(f) {
+  return f.replace(/\.(html|pdf)$/i,'').replace(/[-_]/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function buildCard(k, type) {
+  const s = ST[k];
+  const subjects = data[k]?.[type] || {};
+  const total = Object.values(subjects).reduce((n, a) => n + a.length, 0);
+  const folder = FOLDERS[k];
+
+  let subjsHTML = Object.entries(subjects).map(([subj, files]) => {
+    const items = files.map(f => {
+      const ext  = f.split('.').pop();
+      const path = (subj === 'exercices' && k === 'assiya')
+        ? `assiya/${f}`
+        : `${folder}/${type}/${subj}/${f}`;
+      return `<div class="fi">
+        <div class="fd" style="background:${s.p}"></div>
+        <a href="${path}" target="_blank">${prettyName(f)}</a>
+        <span class="ex">${ext}</span>
+      </div>`;
+    }).join('');
+    return `<details open>
+      <summary>
+        <span class="si">${ICONS[subj]||'📄'}</span>
+        <span class="sn">${LABELS[subj]||subj}</span>
+        <span class="sk" style="background:${s.bg};color:${s.d}">${files.length}</span>
+        <span class="sa">▶</span>
+      </summary>
+      <div class="fl">${items}</div>
+    </details>`;
+  }).join('');
+
+  if (!subjsHTML) {
+    subjsHTML = `<div class="empty-c"><div class="ei">📂</div><p>Aucun fichier pour l'instant</p></div>`;
+  }
+
+  const addBtn = online
+    ? `<button class="add-btn" style="display:flex;background:linear-gradient(135deg,${s.g})" onclick="openUpload('${k}')" title="Ajouter un fichier">＋</button>`
+    : '';
+
+  return `<div class="sc" data-student="${k}">
+    <div class="ct2">
+      <div class="av2" style="background:linear-gradient(135deg,${s.g})">${s.i}</div>
+      <div class="ci">
+        <h2 style="color:${s.d}">${s.name}</h2>
+        <span class="cb" style="background:${s.bg};color:${s.d}">${s.classe}</span>
+      </div>
+      <div class="cs">
+        <div class="n" style="color:${s.p}">${total}</div>
+        <div class="l">fichier${total>1?'s':''}</div>
+      </div>
+      ${addBtn}
+    </div>
+    <div class="subs">${subjsHTML}</div>
+  </div>`;
+}
+
+/* ── FILTER ── */
+function filterStudent(name, pill) {
+  filter = name;
+  document.querySelectorAll('.s-pill').forEach(el => el.classList.remove('active'));
+  pill.classList.add('active');
+  applyFilter(name);
+}
+function applyFilter(name) {
+  document.querySelectorAll('.sc').forEach(c => {
+    c.classList.toggle('hidden', name !== 'all' && c.dataset.student !== name);
+  });
+}
+
+/* ── TABS ── */
 function showTab(slug, btn) {
   document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -549,17 +526,110 @@ function showTab(slug, btn) {
   btn.classList.add('active');
 }
 
-function filterStudent(name, pill) {
-  document.querySelectorAll('.s-pill').forEach(el => el.classList.remove('active'));
-  pill.classList.add('active');
-  document.querySelectorAll('.student-card').forEach(card => {
-    if (name === 'all' || card.dataset.student === name) {
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
-    }
-  });
+/* ── MODAL ── */
+function openUpload(k) {
+  document.getElementById('f-student').value = k;
+  setType('cours');
+  document.getElementById('f-subject').value = 'maths';
+  document.getElementById('f-custom').style.display = 'none';
+  resetDZ();
+  document.getElementById('overlay').classList.add('open');
 }
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  selectedFile = null;
+}
+function onOverlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+function setType(t) {
+  uploadType = t;
+  document.getElementById('tbtn-cours').classList.toggle('active', t === 'cours');
+  document.getElementById('tbtn-controles').classList.toggle('active', t === 'controles');
+}
+function onSubjChange() {
+  const v = document.getElementById('f-subject').value;
+  document.getElementById('f-custom').style.display = v === '_custom' ? 'block' : 'none';
+}
+function onFileChange() {
+  const f = document.getElementById('f-file').files[0];
+  if (f) { selectedFile = f; showDZFile(f.name); }
+}
+function showDZFile(name) {
+  const d = document.getElementById('dzf');
+  d.textContent = '✅ ' + name;
+  d.style.display = 'block';
+}
+function resetDZ() {
+  selectedFile = null;
+  document.getElementById('f-file').value = '';
+  const d = document.getElementById('dzf');
+  d.style.display = 'none';
+  d.textContent = '';
+}
+function onDragOver(e) { e.preventDefault(); document.getElementById('dz').classList.add('over'); }
+function onDragLeave()  { document.getElementById('dz').classList.remove('over'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('dz').classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f) { selectedFile = f; showDZFile(f.name); }
+}
+
+/* ── UPLOAD ── */
+async function doUpload() {
+  const student = document.getElementById('f-student').value;
+  const type    = uploadType;
+  let subject   = document.getElementById('f-subject').value;
+  if (subject === '_custom') subject = document.getElementById('f-custom').value.trim().replace(/\s+/g,'-').toLowerCase();
+
+  if (!subject || !/^[\w\-]+$/.test(subject)) return toast('Nom de matière invalide', 'err');
+  if (!selectedFile) return toast('Choisis un fichier d\'abord', 'err');
+
+  const btn = document.getElementById('sbtn');
+  document.getElementById('sbtn-lbl').textContent = 'Envoi en cours…';
+  document.getElementById('sbtn-icon').textContent = '⏳';
+  btn.disabled = true;
+
+  const fd = new FormData();
+  fd.append('student', student);
+  fd.append('type',    type);
+  fd.append('subject', subject);
+  fd.append('file',    selectedFile, selectedFile.name);
+
+  try {
+    const r  = await fetch('/api/upload', { method:'POST', body:fd });
+    const js = await r.json();
+    if (!r.ok || js.error) throw new Error(js.error || 'Erreur serveur');
+
+    closeModal();
+    toast('✅ ' + js.filename + ' ajouté !', 'ok');
+
+    const r2 = await fetch('/api/files');
+    data = await r2.json();
+    renderAll();
+    applyFilter(filter);
+  } catch(e) {
+    toast('Erreur : ' + e.message, 'err');
+  } finally {
+    document.getElementById('sbtn-lbl').textContent = 'Envoyer';
+    document.getElementById('sbtn-icon').textContent = '⬆️';
+    btn.disabled = false;
+  }
+}
+
+/* ── TOAST ── */
+let toastTimer;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + type;
+  clearTimeout(toastTimer);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+init();
 </script>
 </body>
 </html>
