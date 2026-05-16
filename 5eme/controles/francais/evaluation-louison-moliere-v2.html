@@ -1,0 +1,295 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Lato:wght@400;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#C8972A;--gold-light:#F5E6C0;--deep:#1A0F2E;--wine:#6B1F3A;
+  --parchment:#FBF6ED;--ink:#2C1810;
+}
+#app{font-family:'Lato',sans-serif;background:var(--parchment);min-height:100vh;padding-bottom:3rem;color:var(--ink);}
+.header{background:#1A0F2E;color:#fff;text-align:center;padding:1.8rem 1.5rem 1.2rem;}
+.header h1{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;margin-bottom:0.2rem;}
+.header p{font-size:0.82rem;opacity:0.7;font-style:italic;}
+.prog-wrap{background:rgba(255,255,255,0.15);border-radius:20px;height:7px;margin:0.9rem auto 0;max-width:380px;}
+.prog-bar{background:var(--gold);height:7px;border-radius:20px;transition:width .5s;}
+.prog-lbl{font-size:0.75rem;opacity:0.65;margin-top:0.35rem;}
+.score-bar{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;padding:0.7rem 1rem;background:var(--deep);color:#fff;font-size:0.82rem;}
+.score-item{display:flex;align-items:center;gap:5px;}
+.sdot{width:9px;height:9px;border-radius:50%;}
+.sdot.c{background:#4CAF50;}.sdot.w{background:#f44336;}.sdot.o{background:#FF9800;}
+.sv{font-weight:700;font-size:1rem;}
+.chap-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0.9rem 1rem 0;max-width:680px;margin:0 auto;}
+.ch-btn{font-family:'Lato',sans-serif;font-size:0.71rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1.5px solid var(--deep);background:transparent;color:var(--deep);cursor:pointer;transition:all .2s;}
+.ch-btn.active{background:var(--deep);color:#fff;}
+.ch-btn.done{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.ch-btn.partial{background:var(--wine);color:#fff;border-color:var(--wine);}
+.qc{max-width:640px;margin:1.4rem auto;padding:0 1rem;}
+.ch-title{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;color:var(--wine);margin-bottom:1.1rem;padding-bottom:0.45rem;border-bottom:2px solid var(--gold);display:flex;align-items:center;gap:0.5rem;}
+.q-card{background:#fff;border-radius:12px;border:1px solid rgba(200,151,42,0.22);padding:1.2rem;margin-bottom:1rem;}
+.q-type-badge{display:inline-block;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:0.6rem;letter-spacing:0.4px;}
+.badge-qcm{background:#EDE7F6;color:#4527A0;}
+.badge-open{background:#E3F2FD;color:#0D47A1;}
+.q-text{font-size:0.96rem;font-weight:700;margin-bottom:0.9rem;color:var(--deep);line-height:1.5;}
+.q-num{display:inline-block;background:var(--deep);color:#fff;font-size:0.68rem;font-weight:700;border-radius:50%;width:21px;height:21px;line-height:21px;text-align:center;margin-right:6px;flex-shrink:0;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.opt-btn{font-family:'Lato',sans-serif;text-align:left;padding:9px 13px;border-radius:8px;border:1.5px solid rgba(26,15,46,0.18);background:var(--parchment);cursor:pointer;font-size:0.88rem;color:var(--ink);transition:all .18s;display:flex;align-items:center;gap:8px;}
+.opt-btn:hover:not(:disabled){border-color:var(--gold);background:var(--gold-light);}
+.opt-btn:disabled{cursor:default;}
+.opt-btn.correct{background:#E8F5E9;border-color:#2D6A4F;color:#1B5E20;font-weight:700;}
+.opt-btn.wrong{background:#FFEBEE;border-color:#8B1A1A;color:#8B1A1A;}
+.opt-ind{width:17px;height:17px;border-radius:50%;border:2px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.fb-box{margin-top:0.75rem;padding:0.75rem 0.9rem;border-radius:8px;font-size:0.83rem;line-height:1.55;display:none;}
+.fb-box.show{display:block;}
+.fb-box.correct{background:#E8F5E9;border-left:3px solid #2D6A4F;color:#1B5E20;}
+.fb-box.wrong{background:#FFEBEE;border-left:3px solid #8B1A1A;color:#B71C1C;}
+.fb-box.open-fb{background:#E3F2FD;border-left:3px solid #1565C0;color:#0D47A1;}
+.open-area{display:flex;flex-direction:column;gap:8px;}
+.open-area textarea{width:100%;min-height:90px;resize:vertical;font-family:'Lato',sans-serif;font-size:0.88rem;color:var(--ink);padding:10px 12px;border-radius:8px;border:1.5px solid rgba(26,15,46,0.2);background:var(--parchment);line-height:1.5;}
+.open-area textarea:focus{outline:none;border-color:var(--gold);}
+.submit-open{font-family:'Lato',sans-serif;font-weight:700;font-size:0.85rem;padding:9px 20px;border-radius:20px;border:none;background:var(--deep);color:#fff;cursor:pointer;transition:all .2s;align-self:flex-start;}
+.submit-open:hover{opacity:0.85;}
+.submit-open:disabled{opacity:0.45;cursor:not-allowed;}
+.ai-loading{font-size:0.82rem;color:#666;font-style:italic;padding:0.5rem 0;}
+.nav-btns{display:flex;gap:10px;justify-content:center;margin-top:1.4rem;flex-wrap:wrap;}
+.nav-btn{font-family:'Lato',sans-serif;font-weight:700;font-size:0.86rem;padding:9px 20px;border-radius:25px;border:none;cursor:pointer;transition:all .2s;}
+.nav-btn.primary{background:var(--deep);color:#fff;}
+.nav-btn.secondary{background:transparent;border:2px solid var(--deep);color:var(--deep);}
+.nav-btn:hover{opacity:0.85;transform:translateY(-1px);}
+.nav-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.result-screen{text-align:center;padding:2rem 1rem;max-width:500px;margin:0 auto;}
+.res-medal{font-size:3.5rem;margin-bottom:0.4rem;}
+.res-title{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--deep);margin-bottom:0.4rem;}
+.res-big{font-size:3rem;font-weight:700;color:var(--wine);font-family:'Playfair Display',serif;}
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1.4rem 0;text-align:center;}
+.res-ch{background:#fff;border:1px solid rgba(200,151,42,0.28);border-radius:10px;padding:0.65rem;font-size:0.78rem;}
+.res-ch .cs{font-size:1rem;font-weight:700;}
+.res-ch .cn{color:#666;font-size:0.7rem;margin-top:2px;}
+.tip-box{background:var(--gold-light);border-radius:10px;padding:0.9rem 1rem;font-size:0.83rem;line-height:1.6;margin-top:1rem;text-align:left;}
+.tip-box strong{color:var(--wine);}
+</style>
+
+<div id="app">
+  <div class="header">
+    <h1>🎭 Louison & Monsieur Molière</h1>
+    <p>Évaluation enrichie — Classe de 5ème · Marie-Christine Helgerson</p>
+    <div class="prog-wrap"><div class="prog-bar" id="prog" style="width:0%"></div></div>
+    <div class="prog-lbl" id="prog-lbl">0 / 0 questions répondues</div>
+  </div>
+  <div class="score-bar">
+    <div class="score-item"><div class="sdot c"></div><span>Correct : <span class="sv" id="sc-c">0</span></span></div>
+    <div class="score-item"><div class="sdot w"></div><span>Erreurs : <span class="sv" id="sc-w">0</span></span></div>
+    <div class="score-item"><div class="sdot o"></div><span>Réponses écrites : <span class="sv" id="sc-o">0</span></span></div>
+    <div class="score-item"><span>Score : <span class="sv" id="sc-pct">–</span></span></div>
+  </div>
+  <div class="chap-nav" id="chap-nav"></div>
+  <div class="qc" id="qc"></div>
+</div>
+
+<script>
+const DATA = [
+  {
+    id:0, title:"Chapitre 1 — L'entrée en scène de Louison", icon:"🕯️",
+    qs:[
+      {type:"qcm",q:"Comment s'appelle l'héroïne du roman ?",opts:["Lucette","Louison","Madeleine","Isabelle"],a:1,fb:{w:"L'héroïne s'appelle Louison, une petite fille qui rêve de monter sur scène.",c:"Bravo ! Louison est bien le prénom de notre héroïne."}},
+      {type:"qcm",q:"Quelle est la condition de Louison au début du roman ?",opts:["Elle est noble","Elle est orpheline et pauvre","Elle est fille d'acteur célèbre","Elle est servante chez le roi"],a:1,fb:{w:"Louison est une fillette pauvre et orpheline qui survit difficilement.",c:"Exact ! Sa condition modeste rend son rêve encore plus courageux."}},
+      {type:"open",q:"En quelques phrases, décris Louison : comment est-elle physiquement et moralement au début du roman ?",corr:"Louison est une petite fille pauvre et orpheline, au physique chétif mais aux yeux vifs et curieux. Moralement, elle est courageuse, déterminée, et animée par un rêve immense : devenir comédienne. Malgré sa misère, elle ne se plaint pas et garde une énergie et une volonté hors du commun.",keywords:["pauvre","orpheline","courageuse","déterminée","rêve","comédienne","vive","volonté"]}
+    ]
+  },
+  {
+    id:1, title:"Chapitre 2 — La rencontre avec Molière", icon:"🎭",
+    qs:[
+      {type:"qcm",q:"Dans quelle ville se déroule principalement l'histoire ?",opts:["Lyon","Bordeaux","Paris","Versailles"],a:2,fb:{w:"L'histoire se déroule à Paris, capitale du théâtre au XVIIe siècle.",c:"Très bien ! Paris, ville de Molière et des grandes troupes."}},
+      {type:"qcm",q:"Comment Molière est-il décrit dans le roman ?",opts:["Jeune et vigoureux","Vieux, malade mais passionné","Cruel et autoritaire","Indifférent aux enfants"],a:1,fb:{w:"Molière est un homme affaibli par la maladie mais animé d'une passion intacte pour le théâtre.",c:"Exact ! C'est un Molière en fin de vie, mais dont le génie rayonne."}},
+      {type:"open",q:"Raconte en quelques lignes la première rencontre entre Louison et Molière. Comment se passe-t-elle ? Qu'est-ce qui change pour Louison après ?",corr:"Louison rencontre Molière de façon inattendue et fortuite : elle lui vient en aide dans une situation difficile. Molière, touché par son audace et sa vivacité, remarque quelque chose de particulier en elle. Cette rencontre est décisive car elle ouvre à Louison les portes de la troupe et lui donne une chance de réaliser son rêve.",keywords:["hasard","rencontre","aide","remarque","troupe","rêve","décisive","audace","vivacité"]}
+    ]
+  },
+  {
+    id:2, title:"Chapitre 3 — Dans la troupe", icon:"🪄",
+    qs:[
+      {type:"qcm",q:"Quelle pièce célèbre de Molière est au cœur du roman ?",opts:["Tartuffe","Le Médecin malgré lui","Le Malade imaginaire","Les Précieuses ridicules"],a:2,fb:{w:"Le roman tourne autour du Malade imaginaire, la dernière pièce de Molière.",c:"Excellent ! Le Malade imaginaire est l'œuvre centrale du récit."}},
+      {type:"qcm",q:"Quelle est l'attitude des autres comédiens envers Louison ?",opts:["Tous l'accueillent chaleureusement","Certains la jalousent ou se méfient","Ils l'ignorent totalement","Ils la renvoient aussitôt"],a:1,fb:{w:"L'accueil est mitigé : jalousies et méfiances coexistent avec quelques soutiens.",c:"Bon sens ! La vie de troupe est complexe."}},
+      {type:"open",q:"Qu'est-ce que Louison apprend en intégrant la troupe de Molière ? Cite au moins deux choses concrètes qu'elle découvre sur le métier de comédienne.",corr:"En intégrant la troupe, Louison découvre les réalités du métier : la rigueur des répétitions, l'importance de mémoriser le texte, comment se déplacer sur scène, l'art de projeter sa voix. Elle apprend aussi les coulisses du théâtre : les costumes, le maquillage, les rapports entre acteurs. Elle réalise que le théâtre est un vrai travail qui demande discipline et persévérance.",keywords:["répétitions","texte","scène","voix","costumes","travail","discipline","mémoriser","coulisses","rigueur"]}
+    ]
+  },
+  {
+    id:3, title:"Chapitre 4 — Épreuves et courage", icon:"⚔️",
+    qs:[
+      {type:"qcm",q:"Quel sentiment Louison éprouve-t-elle avant de monter sur scène ?",opts:["De l'ennui","De la jalousie","Un mélange de trac et de bonheur","De la colère"],a:2,fb:{w:"Louison ressent un trac intense mêlé à la joie de vivre son rêve.",c:"Bien ! Ce mélange de peur et de bonheur est très bien décrit dans le roman."}},
+      {type:"open",q:"Selon toi, quelle est l'épreuve la plus difficile que Louison doit surmonter dans le roman ? Explique pourquoi elle est si difficile et comment elle y fait face.",corr:"L'épreuve la plus difficile pour Louison est de prouver sa valeur dans un monde qui ne lui fait pas confiance au départ. Enfant pauvre et inconnue, elle doit convaincre des comédiens expérimentés de sa légitimité. Elle y fait face grâce à sa détermination, son courage, et le soutien précieux de Molière qui croit en elle malgré les doutes des autres.",keywords:["difficile","prouver","confiance","courage","détermination","Molière","soutien","légitimité","doutes","pauvre"]},
+      {type:"open",q:"Quel rôle joue Molière auprès de Louison ? Est-il simplement son employeur ou représente-t-il quelque chose de plus important pour elle ?",corr:"Molière est bien plus qu'un employeur pour Louison : il est un mentor, une figure paternelle. Il croit en son talent quand personne d'autre ne le fait, il lui enseigne son art, il la protège. Louison trouve auprès de lui la confiance et la bienveillance qui lui manquaient. Leur relation est au cœur du roman.",keywords:["mentor","paternel","confiance","talent","enseigne","protège","bienveillance","cœur","relation","figure"]}
+    ]
+  },
+  {
+    id:4, title:"Chapitre 5 — Molière et son époque", icon:"📜",
+    qs:[
+      {type:"qcm",q:"En quelle année se situe l'histoire ?",opts:["1520","1673","1789","1610"],a:1,fb:{w:"L'histoire se déroule en 1673, l'année de la mort de Molière.",c:"Parfait ! 1673 : Molière mourut en scène pendant Le Malade imaginaire."}},
+      {type:"qcm",q:"Sous le règne de quel roi Molière travaillait-il ?",opts:["Louis XIII","Louis XV","Louis XVI","Louis XIV"],a:3,fb:{w:"Molière était le protégé de Louis XIV, le Roi-Soleil.",c:"Excellent ! Louis XIV aimait le théâtre et protégeait Molière."}},
+      {type:"open",q:"Explique ce que représentait le théâtre au XVIIe siècle. Était-ce considéré comme un art respectable à l'époque ? Quelles difficultés les comédiens rencontraient-ils ?",corr:"Au XVIIe siècle, le théâtre était à la fois admiré et méprisé. Admiré car le roi Louis XIV l'aimait et le faisait jouer à Versailles. Méprisé car l'Église catholique condamnait les comédiens, considérés comme des gens de mauvaise vie. Les acteurs ne pouvaient même pas être enterrés en terre chrétienne. Malgré cela, les grandes troupes comme celle de Molière attiraient le public et jouissaient d'une vraie célébrité.",keywords:["Louis XIV","Église","méprisé","admiré","comédiens","enterrés","célébrité","Versailles","chrétienne","condition"]}
+    ]
+  },
+  {
+    id:5, title:"Chapitre 6 — Le dénouement", icon:"🌟",
+    qs:[
+      {type:"qcm",q:"Que se passe-t-il lors de la dernière représentation du Malade imaginaire ?",opts:["La pièce est un échec","Molière s'effondre sur scène","Louison oublie son texte","Le roi interdit la pièce"],a:1,fb:{w:"Molière s'effondre sur scène pendant la 4e représentation et meurt peu après.",c:"Exact ! Cet événement tragique est le climax du roman."}},
+      {type:"open",q:"Comment Louison réagit-elle à la mort de Molière ? Qu'est-ce que cet événement lui apporte malgré la tristesse ?",corr:"La mort de Molière est un choc immense pour Louison. Elle perd son mentor, son protecteur, la figure paternelle qui croyait en elle. Mais cet événement tragique lui permet aussi de grandir : elle réalise que Molière lui a transmis sa passion, son amour du théâtre. Sa mort devient un héritage. Louison comprend qu'elle doit continuer, porter en elle l'enseignement reçu.",keywords:["choc","tristesse","mentor","grandir","héritage","passion","transmettre","continuer","mort","apprend"]},
+      {type:"open",q:"À la fin du roman, qu'a appris Louison sur elle-même ? En quoi est-elle différente de la petite fille du début ? Développe ta réponse en t'appuyant sur des exemples du livre.",corr:"Au début, Louison est une enfant pauvre, sans repères ni confiance en elle, dont le rêve semble irréalisable. À la fin, elle a vécu des expériences qui l'ont transformée : elle a surmonté des obstacles, perdu un être cher, appris un métier. Elle est devenue plus forte, plus consciente de son talent et de sa vocation. Le roman est une histoire de construction de soi : Louison a grandi intérieurement.",keywords:["transformée","grandie","confiance","talent","vocation","surmonté","construction","différente","expériences","appris"]}
+    ]
+  }
+];
+
+let answers={}, openFeedbacks={};
+let currentChap=0, showResults=false;
+
+function totalQs(){return DATA.reduce((s,c)=>s+c.qs.length,0);}
+function answered(){return Object.keys(answers).length;}
+function totalCorrect(){return Object.values(answers).filter(v=>v===true).length;}
+function totalWrong(){return Object.values(answers).filter(v=>v===false).length;}
+function totalOpen(){return Object.keys(openFeedbacks).length;}
+
+function updateUI(){
+  const a=answered(),tot=totalQs();
+  document.getElementById('sc-c').textContent=totalCorrect();
+  document.getElementById('sc-w').textContent=totalWrong();
+  document.getElementById('sc-o').textContent=totalOpen();
+  document.getElementById('sc-pct').textContent=a>0?Math.round(totalCorrect()/tot*100)+'%':'–';
+  document.getElementById('prog').style.width=(a/tot*100)+'%';
+  document.getElementById('prog-lbl').textContent=a+' / '+tot+' questions répondues';
+  updateChapNav();
+}
+
+function updateChapNav(){
+  const nav=document.getElementById('chap-nav');
+  nav.innerHTML=DATA.map((ch,i)=>{
+    const done=ch.qs.filter((_,qi)=>answers[i+'-'+qi]!==undefined).length;
+    const corr=ch.qs.filter((_,qi)=>answers[i+'-'+qi]===true).length;
+    let cls='';
+    if(done===ch.qs.length) cls=corr===ch.qs.length?'done':'partial';
+    if(!showResults&&i===currentChap) cls+=' active';
+    return `<button class="ch-btn ${cls}" onclick="goChap(${i})">${ch.icon} Ch.${i+1}</button>`;
+  }).join('')+(answered()===totalQs()&&!showResults?`<button class="ch-btn active" onclick="showFinalResults()" style="background:var(--gold);border-color:var(--gold);color:var(--ink)">📊 Résultats</button>`:'');
+}
+
+function goChap(i){showResults=false;currentChap=i;renderChap();}
+
+function renderChap(){
+  updateUI();
+  const ch=DATA[currentChap];
+  const el=document.getElementById('qc');
+  let h=`<div class="ch-title">${ch.icon} ${ch.title}</div>`;
+  ch.qs.forEach((q,qi)=>{
+    const key=currentChap+'-'+qi;
+    const done=answers[key]!==undefined;
+    const badge=q.type==='qcm'?'<span class="q-type-badge badge-qcm">QCM</span>':'<span class="q-type-badge badge-open">✏️ Question ouverte</span>';
+    h+=`<div class="q-card" id="qcard-${qi}">${badge}<div class="q-text"><span class="q-num">${qi+1}</span>${q.q}</div>`;
+    if(q.type==='qcm'){
+      h+=`<div class="opts">`;
+      q.opts.forEach((opt,oi)=>{
+        let cls='';let ind='<div class="opt-ind"></div>';
+        if(done){if(oi===q.a){cls='correct';ind='<div class="opt-ind">✓</div>';}else if(oi===answers[key]&&oi!==q.a){cls='wrong';ind='<div class="opt-ind">✗</div>';}}
+        h+=`<button class="opt-btn ${cls}" ${done?'disabled':''} onclick="answerQCM(${qi},${oi})">${ind}${opt}</button>`;
+      });
+      h+=`</div>`;
+      if(done){const ok=answers[key]===true;h+=`<div class="fb-box ${ok?'correct':'wrong'} show">${ok?'✅':'❌'} ${ok?q.fb.c:q.fb.w+(answers[key]!==q.a?'<br><strong>Bonne réponse :</strong> '+q.opts[q.a]:'')}</div>`;}
+    } else {
+      if(done){
+        const fb=openFeedbacks[key]||{};
+        h+=`<div class="fb-box open-fb show">🤖 <strong>Correction IA :</strong><br>${fb.text||''}</div>`;
+      } else {
+        h+=`<div class="open-area">
+          <textarea id="ota-${qi}" placeholder="Écris ta réponse ici..."></textarea>
+          <button class="submit-open" id="sbtn-${qi}" onclick="submitOpen(${qi})">✉️ Envoyer ma réponse</button>
+          <div class="ai-loading" id="ail-${qi}" style="display:none">🤖 L'IA analyse ta réponse...</div>
+        </div>`;
+      }
+    }
+    h+=`</div>`;
+  });
+  h+=`<div class="nav-btns">`;
+  if(currentChap>0) h+=`<button class="nav-btn secondary" onclick="goChap(${currentChap-1})">← Précédent</button>`;
+  if(currentChap<DATA.length-1) h+=`<button class="nav-btn primary" onclick="goChap(${currentChap+1})">Suivant →</button>`;
+  if(answered()===totalQs()&&currentChap===DATA.length-1) h+=`<button class="nav-btn primary" onclick="showFinalResults()">📊 Mes résultats</button>`;
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+
+function answerQCM(qi,oi){
+  const key=currentChap+'-'+qi;
+  if(answers[key]!==undefined)return;
+  answers[key]=(oi===DATA[currentChap].qs[qi].a);
+  renderChap();
+  setTimeout(()=>{const e=document.getElementById('qcard-'+qi);if(e)e.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+
+async function submitOpen(qi){
+  const key=currentChap+'-'+qi;
+  const ta=document.getElementById('ota-'+qi);
+  const txt=ta?ta.value.trim():'';
+  if(!txt){ta.style.border='1.5px solid #E24B4A';return;}
+  document.getElementById('sbtn-'+qi).disabled=true;
+  document.getElementById('ail-'+qi).style.display='block';
+  const q=DATA[currentChap].qs[qi];
+  const prompt=`Tu es un professeur de français bienveillant pour une élève de 5ème. 
+Livre analysé : "Louison et Monsieur Molière" de Marie-Christine Helgerson.
+Question posée à l'élève : "${q.q}"
+Réponse de l'élève : "${txt}"
+Éléments attendus dans la bonne réponse : "${q.corr}"
+
+Donne une correction courte (5-8 lignes max) en français, adaptée à une élève de 5ème :
+1. Commence par encourager (même si la réponse est incomplète)
+2. Indique ce qui est juste dans sa réponse
+3. Complète avec les éléments manquants importants
+4. Termine par un conseil ou une note d'encouragement
+
+Sois chaleureux, précis et pédagogique. Tutoie l'élève.`;
+  try {
+    const resp=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
+    });
+    const data=await resp.json();
+    const fbText=data.content&&data.content[0]?data.content[0].text:"Correction non disponible.";
+    openFeedbacks[key]={text:fbText.replace(/\n/g,'<br>')};
+    answers[key]='open';
+    renderChap();
+    setTimeout(()=>{const e=document.getElementById('qcard-'+qi);if(e)e.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+  } catch(e){
+    document.getElementById('ail-'+qi).textContent="❌ Erreur de connexion. Réessaie.";
+    document.getElementById('sbtn-'+qi).disabled=false;
+  }
+}
+
+function showFinalResults(){
+  showResults=true;updateUI();
+  const tot=totalQs(),corr=totalCorrect(),open=totalOpen();
+  const pct=Math.round(corr/tot*100);
+  let medal='⭐',mention='Continue tes efforts !';
+  if(pct>=85){medal='🏆';mention='Excellent ! Tu es prête pour le contrôle !';}
+  else if(pct>=70){medal='🥇';mention='Très bien, encore un peu de révision !';}
+  else if(pct>=50){medal='🥈';mention='Bon début ! Relis les chapitres difficiles.';}
+  let chGrid=DATA.map((ch,i)=>{
+    const cc=ch.qs.filter((_,qi)=>answers[i+'-'+qi]===true).length;
+    const co=ch.qs.filter(q=>q.type==='open').length;
+    const tot2=ch.qs.length;
+    const c2=cc;
+    const color=c2===tot2-co?'#2D6A4F':c2>=Math.ceil((tot2-co)/2)?'#C8972A':'#8B1A1A';
+    return `<div class="res-ch"><div class="cs" style="color:${color}">${cc}/${tot2-co} QCM · ${openFeedbacks[i+'-'+(ch.qs.findIndex(q=>q.type==='open'))]?'✅':'–'} Écrit</div><div class="cn">${ch.icon} Ch.${i+1}</div></div>`;
+  }).join('');
+  document.getElementById('qc').innerHTML=`<div class="result-screen">
+    <div class="res-medal">${medal}</div>
+    <div class="res-title">Ton résultat final</div>
+    <div class="res-big">${corr}/${tot-open} QCM</div>
+    <p style="color:var(--wine);font-weight:700;margin:0.3rem 0 0.6rem;font-size:0.9rem">${pct}% de bonnes réponses QCM — ${mention}</p>
+    <p style="font-size:0.82rem;color:#555;margin-bottom:1rem">+ ${open} question(s) ouverte(s) corrigée(s) par l'IA 📝</p>
+    <div class="res-grid">${chGrid}</div>
+    <div class="tip-box"><strong>💡 Pour le contrôle :</strong><br>Relis tes corrections IA sur les questions ouvertes — elles contiennent les éléments clés attendus par ton prof. N'hésite pas à refaire les chapitres où tu as eu des erreurs !</div>
+    <div class="nav-btns" style="margin-top:1.4rem">
+      <button class="nav-btn secondary" onclick="restart()">🔄 Recommencer</button>
+      <button class="nav-btn primary" onclick="goChap(0)">📖 Revoir les questions</button>
+    </div>
+  </div>`;
+}
+
+function restart(){answers={};openFeedbacks={};currentChap=0;showResults=false;renderChap();updateUI();}
+renderChap();updateUI();
+</script>
